@@ -21,7 +21,7 @@ if(isset($pass))
 
 if($action == "Register"){
     mysqli_query($link,"INSERT INTO Users(username,password,email)VALUES('".$usrname."','".$pass."','".$email."')");
-    $response = 'succes';
+    $resultArray = 'succes';
 }
 else if($action == "Home"){
     $response = mysqli_query($link,"SELECT * FROM Users WHERE username='".$usrname."'");
