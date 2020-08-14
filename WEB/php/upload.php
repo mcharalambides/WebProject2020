@@ -1,6 +1,9 @@
 <?php
+
 if(isset($_POST['username']))
     $username = $_POST['username'];
+if(isset($_POST['id']))
+    $id = $_POST['id'];
 
 if(isset($_POST['submit'])){
     $file = $_FILES['upload'];//To arxeio
@@ -20,28 +23,73 @@ if(isset($_POST['submit'])){
         die("Connection failed: " . $conn->connect_error);
       }
 
-    $sql ="INSERT INTO Arxeio(user_id,timestampMs,accuracy,latitudeE7,longitudeE7) VALUES";
-    $myString = "";
+      $sql ="INSERT INTO Arxeio(user_id,timestampMs,accuracy,latitudeE7,longitudeE7) VALUES ";
+      $myString = "";
+      $sql2 ="INSERT INTO Activity(user_id,timestampMs,subTimestampMs,type) VALUES ";
+      $myString2 = "";  
+        /* $sql3 ="INSERT INTO ActivityType(user_id,timestampMs,subTimestampMs,Type) VALUES ";
+        $myString3 = ""; */
 
+    $flag = false;  
     for ($i = 0; $i < count($myObject["locations"]); $i++) {
+        
+        //CALCULATE DISTANCE FROM CENTER OF PATRAS
+        if(10 < haversineGreatCircleDistance(38.230462, 21.753150, $myObject["locations"][$i]["latitudeE7"]/ 10000000 , $myObject["locations"][$i]["longitudeE7"]/ 10000000, 6371))
+            continue;
+        $flag = true;
 
-        $myString .= "(1,'".$myObject["locations"][$i]["timestampMs"]."',
+        $timestampMs = gmdate('Y-m-d H:i:s',$myObject["locations"][$i]["timestampMs"]/1000);
+        $myString .= "('".$id."','".$timestampMs."',
         ".$myObject["locations"][$i]["accuracy"].",
         ".$myObject["locations"][$i]["latitudeE7"].",
-        ".$myObject["locations"][$i]["longitudeE7"].")"; 
-        
-        if($i < count($myObject["locations"]) - 1)
-            $myString .= ",";
-        else
-            $myString .= ";";
-        /* if ($conn->query($sql) === TRUE) {
-            echo "<br> New record created successfully";
-            } else {
-            echo "<br> Error: " . $sql . "<br>" . $conn->error;
-            }  */
+        ".$myObject["locations"][$i]["longitudeE7"]."),"; 
+
+        if(isset($myObject["locations"][$i]["activity"])){
+            for($j = 0; $j < count($myObject["locations"][$i]["activity"]); $j++){
+
+                $subTimestampMs = gmdate('Y-m-d H:i:s',$myObject["locations"][$i]["activity"][$j]["timestampMs"]/1000);
+                $myString2 .= "('".$id."','".$timestampMs."','".$subTimestampMs."',";
+    
+                $confidence = 0;
+                for($k = 0; $k < count($myObject["locations"][$i]["activity"][$j]["activity"]); $k++){
+                    $tmp_confidence = $myObject["locations"][$i]["activity"][$j]["activity"][$k]["confidence"];
+                    if($tmp_confidence > $confidence){
+                        $type = $myObject["locations"][$i]["activity"][$j]["activity"][$k]["type"];
+                        $confidence  = $myObject["locations"][$i]["activity"][$j]["activity"][$k]["confidence"];
+                    }
+                }
+                $myString2 .= "'".$type."'),";
+            }
+        }
     }
-    $sql .= $myString;
-    $conn->query($sql);
+
+    if($flag){
+        $sql .= substr($myString, 0 ,-1).";";
+        $sql2 .= substr($myString2, 0 ,-1).";";
+    //$sql3 .= substr($myString3, 0 ,-1).";";
+
+        if ($conn->query($sql) === TRUE) 
+            echo "<br>New record created successfully";
+        else 
+            echo "<br> Error: " . $sql . "<br>" . $conn->error;
+
+        if ($conn->query($sql2) === TRUE) 
+            echo "<br>New record created successfully";
+        else 
+            echo "<br> Error: " . $sql2 . "<br>" . $conn->error;
+
+    }
+
+    /* if ($conn->query($sql3) === TRUE) 
+        echo '<script language="javascript"> 
+           alert("success"); 
+           window.location.href=" ../templates/home.html?username='.$_POST['username'].'"; 
+
+           </script>';
+        }
+    else 
+        echo "<br> Error: " . $sql3 . "<br>" . $conn->error; */
+ 
 
     $conn->close();
 
@@ -63,4 +111,21 @@ if(isset($_POST['submit'])){
          </script>'; 
     } */
 }
+
+function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius)
+  {
+    // convert from degrees to radians
+    $latFrom = deg2rad($latitudeFrom);
+    $lonFrom = deg2rad($longitudeFrom);
+    $latTo = deg2rad($latitudeTo);
+    $lonTo = deg2rad($longitudeTo);
+  
+    $latDelta = $latTo - $latFrom;
+    $lonDelta = $lonTo - $lonFrom;
+  
+    $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
+      cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
+    return $angle * $earthRadius;
+  }
+
 ?>

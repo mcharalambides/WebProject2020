@@ -18,9 +18,15 @@ $usrname = mysqli_real_escape_string($link,$user);
 if(isset($pass))
     $pass = mysqli_real_escape_string($link,$pass);
 
-
 if($action == "Register"){
-    mysqli_query($link,"INSERT INTO Users(username,password,email)VALUES('".$usrname."','".$pass."','".$email."')");
+
+    //2-WAY ENCRYPTION
+    $cipher = "aes-128-gcm";
+    $ivlen = openssl_cipher_iv_length($cipher);
+    $iv = openssl_random_pseudo_bytes($ivlen);
+    $ciphertext = openssl_encrypt($email, $cipher, $pass, $options=0, $iv, $tag);
+
+    mysqli_query($link,"INSERT INTO Users(id,username,password,email)VALUES('".$ciphertext."','".$usrname."','".$pass."','".$email."')");
     $resultArray = 'succes';
 }
 else if($action == "Home"){

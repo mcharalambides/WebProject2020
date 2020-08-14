@@ -10,9 +10,9 @@ $(document).ready(function() {
 
     const urlParams = new URLSearchParams(window.location.search);
     const username = urlParams.get('username');
+    var id;
 
     document.getElementById("homeLink").setAttribute('href','home.html?username='+username );
-    document.getElementById("uploadFileLink").setAttribute('href','UploadFile.html?username='+username );
 
     $.get("../php/insert.php", {'usrname': username, 'action': "Home"}, function(data){
         console.log(data);
@@ -20,6 +20,8 @@ $(document).ready(function() {
         var obj = $.parseJSON(data);
         document.getElementById("email").innerHTML = obj[0]['email'];
         document.getElementById("username").innerHTML = username;
+        document.getElementById("uploadFileLink").setAttribute('href','UploadFile.html?id='+obj[0]['id']+'&'+'username='+username );
+
     });
 
     //HEATMAP
@@ -28,8 +30,19 @@ $(document).ready(function() {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
+
+    L.circle([38.230462,21.753150], {
+      color: 'blue',
+      fillColor: '#f03',
+      fillOpacity: 0.5,
+      radius: 10000
+  }).addTo(map);
     
      heat = L.heatLayer([], {radius: 25}).addTo(map);
+
+     map.on('click', function(e){
+       console.log(e.latlng);
+     });
 
 
      //GET THE JSON FILE
