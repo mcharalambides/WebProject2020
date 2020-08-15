@@ -2,7 +2,7 @@
 
 $response;
 
-$link = mysqli_connect("127.0.0.1","root","","Project2020","3306");
+$link = mysqli_connect("127.0.0.1","root","","Project2020","3307");
 
 if(isset($_GET["usrname"]))
     $user = ($_GET["usrname"]);
