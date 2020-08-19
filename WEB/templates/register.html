@@ -1,36 +1,42 @@
 <!DOCTYPE html>
  <html>
-      <head>
-           <meta charset="utf-8">
-           <title>Angularjs</title>
-           <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-      </head>
-      <body>
-           <form action="Controller1.js" method="POST">
-                <table>
-                     <tbody>
-                         <tr>
-                              <td><label for="username"><b>Username</b></label></td>
-                              <td><input type="text" id="username" ></td>
-                         </tr>
-                         <tr>
-                              <td><label for="password"><b>Password</b></label></td>
-                              <td><input type="text" id="password"></td>
-                         </tr>
-                         <tr>
-                              <td><label for="email"><b>Email</b></label></td>
-                              <td><input type="text" id="email"></td>
-                         </tr>
-                         <tr>
-                              <td><input id="registerButton" type="button" value="Register"></td>
-                         </tr>
-                     </tbody>
-                </table>
-           </form>
-      </body>
-      <script src="../scripts/jquery.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-      <script src="../scripts/registerScript.js"></script>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Register Form</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link type="text/css" rel="stylesheet" href="../CSS/registerForm.css"></link>
+</head>
+<body>
+<div class="signup-form">
+	<form action="../php/insert.php" method="POST">
+	
+		<h2 class="text-center">Registration</h2>
+		<div class="form-group">
+			<input type="text" class="form-control" name="username" placeholder="Username" required="required" id="username" minlength="5" maxlength="15>
+		</div>
+		<div class="form-group">
+			<input type="password" class="form-control" name="password" placeholder="Password" required="required" id="password" minlength="8" maxlength="15">
+		</div>
+		<div class="form-group">
+			<input type="email" class="form-control" name="email" placeholder="Email Adress" required="required" id="email">
+		</div>
+        <div class="form-group">
+			<button type="submit" class="btn btn-primary btn-lg">Register!</button>
+		</div>
+		
+    </form>
+	
+	<div class="clearfix">Already have an account? <a href="../templates/login.html">Login here</a></div>
+	
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+<script src="../scripts/jquery.js"></script>
+<script src="../scripts/registerScript.js"></script>
+</body>
+      
 
 </html>
 
