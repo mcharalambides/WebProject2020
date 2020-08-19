@@ -42,7 +42,7 @@ if($action == "Register"){
 
     $response = mysqli_query($link,"INSERT INTO Users(id,username,password,email)VALUES('".$id."','".$usrname."','".$pass."','".$email."')");
     if($response)
-        echo 'succes';
+    header('Location: ../templates/login.html');
 
 }
 else if($action == "Home"){

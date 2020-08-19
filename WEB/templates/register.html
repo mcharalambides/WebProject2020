@@ -9,17 +9,20 @@
 </head>
 <body>
 <div class="signup-form">
-	<form action="../php/insert.php" method="POST">
+	<form action="../php/insert.php?" method="GET">
 	
 		<h2 class="text-center">Registration</h2>
 		<div class="form-group">
-			<input type="text" class="form-control" name="username" placeholder="Username" required="required" id="username" minlength="5" maxlength="15>
+			<input type="text" class="form-control" name="usrname" placeholder="Username" required="required" id="username" minlength="5" maxlength="15">
 		</div>
 		<div class="form-group">
-			<input type="password" class="form-control" name="password" placeholder="Password" required="required" id="password" minlength="8" maxlength="15">
+			<input type="password" class="form-control" name="pass" placeholder="Password" required="required" id="password" minlength="8" maxlength="15">
 		</div>
 		<div class="form-group">
 			<input type="email" class="form-control" name="email" placeholder="Email Adress" required="required" id="email">
+		</div>
+		<div class="form-group">
+			<input type="hidden"  name="action" value="Register">
 		</div>
         <div class="form-group">
 			<button type="submit" class="btn btn-primary btn-lg">Register!</button>
