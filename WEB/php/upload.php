@@ -13,7 +13,14 @@ if(isset($_POST['submit'])){
     //Pairnoume to extension
     $fileExt = explode('.', $fileName);
     $fileActualExt = end($fileExt);
+    //Elegxoume oti einai json
+    if(!((strcmp('json', $fileActualExt) == 0))){
+        echo '<script language="javascript"> alert("You cannot upload files of this type!")
+        window.location.href=" ../templates/home.html?username='.$_POST['username'].'&id='.$id.'"; </script>';
+        exit;  
+    }
 
+    //
     $myfile = fopen($fileTmpName, "r") or die("Unable to open file!");
     $myObject = json_decode(fread($myfile, filesize($fileTmpName)), true);
 
@@ -23,7 +30,7 @@ if(isset($_POST['submit'])){
         die("Connection failed: " . $conn->connect_error);
       }
 
-      $sql ="INSERT INTO Arxeio(user_id,timestampMs,accuracy,latitudeE7,longitudeE7) VALUES ";
+      $sql ="INSERT INTO Arxeio(user_id,timestampMs,accuracy,latitudeE7,longitudeE7,heading,velocity,altitude,verticalAccuracy) VALUES ";
       $myString = "";
       $sql2 ="INSERT INTO Activity(user_id,timestampMs,subTimestampMs,type) VALUES ";
       $myString2 = "";  
@@ -38,11 +45,30 @@ if(isset($_POST['submit'])){
             continue;
         $flag = true;
 
+        if(isset($myObject["locations"][$i]["heading"]))
+            $heading = $myObject["locations"][$i]["heading"];
+        else
+            $heading = "null";
+        if(isset($myObject["locations"][$i]["velocity"]))
+            $velocity = $myObject["locations"][$i]["velocity"];
+        else
+            $velocity = "null";
+
+        if(isset($myObject["locations"][$i]["altitude"]))
+            $altitude = $myObject["locations"][$i]["altitude"];
+        else
+            $altitude = "null";
+
+        if(isset($myObject["locations"][$i]["verticalAccuracy"]))
+            $verticalAccuracy = $myObject["locations"][$i]["verticalAccuracy"];
+        else
+            $verticalAccuracy = "null";
+
         $timestampMs = gmdate('Y-m-d H:i:s',$myObject["locations"][$i]["timestampMs"]/1000);
         $myString .= "('".$id."','".$timestampMs."',
         ".$myObject["locations"][$i]["accuracy"].",
         ".$myObject["locations"][$i]["latitudeE7"].",
-        ".$myObject["locations"][$i]["longitudeE7"]."),"; 
+        ".$myObject["locations"][$i]["longitudeE7"].",".$heading.",".$velocity.",".$altitude.",".$verticalAccuracy."),";
 
         if(isset($myObject["locations"][$i]["activity"])){
             for($j = 0; $j < count($myObject["locations"][$i]["activity"]); $j++){
@@ -66,18 +92,26 @@ if(isset($_POST['submit'])){
     if($flag){
         $sql .= substr($myString, 0 ,-1).";";
         $sql2 .= substr($myString2, 0 ,-1).";";
-    //$sql3 .= substr($myString3, 0 ,-1).";";
+        //$sql3 .= substr($myString3, 0 ,-1).";";
 
-        if ($conn->query($sql) === TRUE) 
-            echo "<br>New record created successfully";
-        else 
+        if ($conn->query($sql) === TRUE and $conn->query($sql2) === TRUE){ 
+            $conn->query("UPDATE Users SET last_upload= ' ".gmdate('Y-m-d H:i:s')."' WHERE id='".$id."'"); 
+            echo '<script language="javascript"> 
+            alert("success"); 
+            window.location.href=" ../templates/home.html?username='.$_POST['username'].'&id='.$id.'"; 
+            </script>';
+        }
+        else{ 
             echo "<br> Error: " . $sql . "<br>" . $conn->error;
-
-        if ($conn->query($sql2) === TRUE) 
-            echo "<br>New record created successfully";
-        else 
             echo "<br> Error: " . $sql2 . "<br>" . $conn->error;
+        }
 
+    }
+    else{
+        echo '<script language="javascript"> 
+            alert("No points inside Patra"); 
+            window.location.href=" ../templates/home.html?username='.$_POST['username'].'&id='.$id.'"; 
+            </script>';
     }
 
     /* if ($conn->query($sql3) === TRUE) 
@@ -92,24 +126,6 @@ if(isset($_POST['submit'])){
  
 
     $conn->close();
-
-    //Elegxoume oti einai json
-    /* if(strcmp('json', $fileActualExt) == 0){
-        if(move_uploaded_file($fileTmpName, '../upload/'.$_POST['username'].'.json')){
-           echo '<script language="javascript"> 
-           alert("success"); 
-           window.location.href=" ../templates/home.html?username='.$_POST['username'].'"; 
-
-           </script>';
-        }
-        else
-           echo '<script language="javascript"> alert("failure") </script>';
-    }
-    else{
-        echo '<script language="javascript"> alert("You cannot upload files of this type!")
-        window.location.href=" ../templates/home.html?username='.$_POST['username'].'";
-         </script>'; 
-    } */
 }
 
 function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius)

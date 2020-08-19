@@ -14,7 +14,7 @@
                <div class="header-left">
                  <a id="homeLink">Home</a>
                  <a id="uploadFileLink">Upload File</a>
-                 <a href="#about">Log Out</a>
+                 <a href="../php/insert.php?action=LogOut">Log Out</a>
                </div>
              </div>
 
@@ -25,10 +25,6 @@
                               <td><input type="file" name="upload"></td>
                         </tr>
                         <tr>
-                             <td>
-                             </td>
-                        </tr>
-                        <tr>
                          <td><button id="fileUpload" type="submit" name="submit">UPLOAD</button></td>
                         </tr>
                     </tbody>
@@ -37,6 +33,15 @@
                <input type="hidden" name="id" id="id">
           </form>
 
+          <div style="text-align: center;"">
+               <div><b>CIRCLE SIZE</b></div>
+               <div>
+                    <button id="increase">+</button>
+                    <button id="decrease">-</button>
+                    <button id="remove">remove</button>
+               </div>
+          </div>
+          <br>
           <div id="map"></div>
                     
       </body>

@@ -14,7 +14,7 @@
                <div class="header-left">
                  <a id="homeLink">Home</a>
                  <a id="uploadFileLink">Upload File</a>
-                 <a href="#about">Log Out</a>
+                 <a href="../php/insert.php?action=LogOut">Log Out</a>
                </div>
              </div>
 
@@ -33,15 +33,45 @@
                          <td>PERIOD : </td>
                          <td id="period"></td>
                     </tr>
+                    <tr>
+                         <td>LAST UPLOAD : </td>
+                         <td id="last_upload"></td>
+                    </tr>
                </tbody>
           </table>          
 
           <br>
           <div class="wrapper">
-               <select required  id="year"  class="" ></select>
-               <select required  id="month"  class=""></select>
-          </div>
-          <div>
+               <table style="margin: auto;">
+                    <tbody>
+                         <tr>
+                              <td></td>
+                              <td>FROM</td>
+                              <td>TO</td>
+                         </tr>
+                         <tr>
+                              <td>YEAR : </td>
+                              <td><select required  id="year"  class="" >
+                                   <option>--OPTIONS--</option>
+                              </select></td>
+                              <td><select disabled id="year"  class="" >
+                                   <option>--OPTIONS--</option>
+                              </select></td>
+                         </tr>
+                         <tr>
+                              <td>MONTH : </td>
+                              <td><select required  id="month"  class="">
+                                   <option>--OPTIONS--</option>
+                              </select></td>
+                              <td><select disabled  id="year"  class="" >
+                                   <option>--OPTIONS--</option>
+                              </select></td>
+                         </tr>
+                         <tr>
+                              <td><button><b>DISPLAY</b></button></td>
+                         </tr>
+                    </tbody>
+               </table>
                <div  id="piechart"></div>
                <div style="display: none;" id="barchart2"></div>
           </div>
