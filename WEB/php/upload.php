@@ -1,9 +1,14 @@
 <?php
 
+
 if(isset($_POST['username']))
     $username = $_POST['username'];
 if(isset($_POST['id']))
     $id = $_POST['id'];
+
+$radius = $_POST['radius']/1000;
+$lat = $_POST['lat'];
+$lng = $_POST['lng'];
 
 if(isset($_POST['submit'])){
     $file = $_FILES['upload'];//To arxeio
@@ -43,6 +48,11 @@ if(isset($_POST['submit'])){
         //CALCULATE DISTANCE FROM CENTER OF PATRAS
         if(10 < haversineGreatCircleDistance(38.230462, 21.753150, $myObject["locations"][$i]["latitudeE7"]/ 10000000 , $myObject["locations"][$i]["longitudeE7"]/ 10000000, 6371))
             continue;
+        if($radius != 0){
+            if($radius > haversineGreatCircleDistance($lat,$lng, $myObject["locations"][$i]["latitudeE7"]/ 10000000 , $myObject["locations"][$i]["longitudeE7"]/ 10000000, 6371))
+            continue; 
+        }
+
         $flag = true;
 
         if(isset($myObject["locations"][$i]["heading"]))
@@ -92,14 +102,14 @@ if(isset($_POST['submit'])){
     if($flag){
         $sql .= substr($myString, 0 ,-1).";";
         $sql2 .= substr($myString2, 0 ,-1).";";
-        //$sql3 .= substr($myString3, 0 ,-1).";";
-
+        //$sql3 .= substr($myString3, 0 ,-1).";";  
+        //echo(microtime(true)); 
         if ($conn->query($sql) === TRUE and $conn->query($sql2) === TRUE){ 
             $conn->query("UPDATE Users SET last_upload= ' ".gmdate('Y-m-d H:i:s')."' WHERE id='".$id."'"); 
             echo '<script language="javascript"> 
             alert("success"); 
             window.location.href=" ../templates/home.html?username='.$_POST['username'].'&id='.$id.'"; 
-            </script>';
+            </script>';  
         }
         else{ 
             echo "<br> Error: " . $sql . "<br>" . $conn->error;

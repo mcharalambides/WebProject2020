@@ -1,5 +1,6 @@
 var previousCircle;
 var map;
+var center=0,finalRadius=0;
 $(document).ready(function() {
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -23,7 +24,9 @@ $(document).ready(function() {
         if(previousCircle != null){
             map.removeLayer(previousCircle);
         }
-        
+        center = e.latlng;
+        finalRadius = 500;
+        console.log(center,finalRadius);
         previousCircle = L.circle(e.latlng, {
             color: 'red',
             fillColor: '#f03',
@@ -34,12 +37,20 @@ $(document).ready(function() {
 
 });
 
+$("form").submit(function(){
+    $("#myForm").append('<input type="hidden" name="lat" value='+center.lat+' />');
+    $("#myForm").append('<input type="hidden" name="lng" value='+center.lng+' />');
+    $("#myForm").append('<input type="hidden" name="radius" value='+finalRadius+' />');
+});
+
 $("#decrease").on("click", function() {
     var radius = previousCircle.getRadius();
     if(radius <= 0)
         map.removeLayer(previousCircle);
     else 
         previousCircle.setRadius(radius - 50);
+    
+    finalRadius = previousCircle.getRadius();
 });
 
 $("#increase").on("click", function() {
@@ -48,6 +59,8 @@ $("#increase").on("click", function() {
         map.removeLayer(previousCircle);
     else 
         previousCircle.setRadius(radius + 50);
+    
+    finalRadius = previousCircle.getRadius();
 });
 
 $("#remove").on("click", function() {

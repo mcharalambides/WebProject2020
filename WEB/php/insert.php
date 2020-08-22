@@ -18,9 +18,11 @@ if(isset($_GET["email"]))
     $email = ($_GET["email"]);
 if(isset($_GET["id"]))
     $id = ($_GET["id"]);
-
-$action = ($_GET["action"]);
-
+if(isset($_GET["action"]))
+    $action = ($_GET["action"]);
+else
+    $action = null;
+    
 if($action == 'LogOut'){
     echo '<script language="javascript"> 
             alert("Logging Out"); 
@@ -100,17 +102,24 @@ else{
     $result = $result->fetch_all(MYSQLI_ASSOC);
 
     if(count($result) > 0){
-        for($i = 0; i<count($result); $i++){
+        for($i = 0; $i<count($result); $i++){
             if(password_verify($pass,$result[$i]["password"]) == 1){
                 header('Location: ../templates/home.html?username='.$result[$i]["username"].'&id='.$result[$i]["id"]);
                 exit;
             }
-            else
-                echo 'INVALID INPUT';
+            else{
+                echo '<script language="javascript"> 
+                alert("INVALID CREDENTIALS"); 
+                window.location.href=" ../templates/login.html"; 
+                </script>';
+            }
         }
-    }
+        }
     else
-        echo 'INVALID INPUT';
+        echo '<script language="javascript"> 
+        alert("INVALID CREDENTIALS"); 
+        window.location.href=" ../templates/login.html"; 
+        </script>';
 }
 
 mysqli_close($link);
