@@ -48,12 +48,13 @@ if(isset($_POST['submit'])){
         //CALCULATE DISTANCE FROM CENTER OF PATRAS
         if(10 < haversineGreatCircleDistance(38.230462, 21.753150, $myObject["locations"][$i]["latitudeE7"]/ 10000000 , $myObject["locations"][$i]["longitudeE7"]/ 10000000, 6371))
             continue;
+
+        $flag = true;    
+
         if($radius != 0){
             if($radius > haversineGreatCircleDistance($lat,$lng, $myObject["locations"][$i]["latitudeE7"]/ 10000000 , $myObject["locations"][$i]["longitudeE7"]/ 10000000, 6371))
-            continue; 
+                continue; 
         }
-
-        $flag = true;
 
         if(isset($myObject["locations"][$i]["heading"]))
             $heading = $myObject["locations"][$i]["heading"];

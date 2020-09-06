@@ -65,15 +65,8 @@ else if($action == "Home"){
     }
     $max = $temp[0]["MAX"]; $min = $temp[0]["MIN"];
 
-    //GET DAY WITH THE MOST THE MOST RECORDS
-    /* $temp1 = mysqli_query($link, "SELECT day(subTimestampMs) AS time,count(*) AS points FROM `Activity` WHERE user_id='".$id."'GROUP BY day(subTimestampMs)");
-    $temp1 = $temp1->fetch_all(MYSQLI_ASSOC);
-    $MAX_DAY = $temp1; */
-
-    //GET DAY OF THE WEEK WITH THE MOST THE MOST RECORDS
-    /* $temp2 = mysqli_query($link, "SELECT dayofweek(subTimestampMs) AS time,count(*) AS points FROM `Activity` WHERE user_id='".$id."'GROUP BY dayofweek(subTimestampMs)");
-    $temp2 = $temp2->fetch_all(MYSQLI_ASSOC);
-    $MAX_DAYOFWEEK = $temp2; */
+    $temp = mysqli_query($link,"select year(timestampMs) AS YEARS from Arxeio where user_id ='".$id."' GROUP BY year(timestampMs)");
+    $YEARS = $temp->fetch_all(MYSQLI_ASSOC);
 
     //NUMBER OF ACTIVITIES 
     $temp3 = mysqli_query($link,"select type AS activity,count(*) AS points from Activity where user_id='".$id."'group by type");
@@ -86,15 +79,35 @@ else if($action == "Home"){
     $response["coords"] = $response2;
     $response["MAX"] = $max; 
     $response["MIN"] = $min;
+    $response["YEARS"] = $YEARS;
     echo json_encode($response);
 }
 else if ($action == "Query"){
+    //Getting new coordinates
+    $coords = mysqli_query($link,$_GET["Query1"]);
+    $coords = $coords->fetch_all(MYSQLI_ASSOC);
+    
+    //Getting new activity percentages
+    $activities = mysqli_query($link,$_GET["Query2"]);
+    $activities = $activities->fetch_all(MYSQLI_ASSOC);
+
+    //Getting hours
+    $response["coords"] = $coords;
+    $response["activities"] = $activities;
+    echo json_encode($response);
+}
+else if ($action == "Query2"){
+    //Getting new coordinates
     $days = mysqli_query($link,$_GET["Query1"]);
     $days = $days->fetch_all(MYSQLI_ASSOC);
-    $weeks = mysqli_query($link,$_GET["Query2"]);
-    $weeks = $weeks->fetch_all(MYSQLI_ASSOC);
+    
+    //Getting new activity percentages
+    $week = mysqli_query($link,$_GET["Query2"]);
+    $week = $week->fetch_all(MYSQLI_ASSOC);
+
+    //Getting hours
     $response["MAX_DAY"] = $days;
-    $response["MAX_DAYOFWEEK"] = $weeks;
+    $response["MAX_DAYOFWEEK"] = $week;
     echo json_encode($response);
 }
 else{
