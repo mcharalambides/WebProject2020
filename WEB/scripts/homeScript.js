@@ -1,14 +1,16 @@
 var heat;
+var previousPie;
 var previousChart;
 var previousChart2;
-var dataCopy2;
 var id;
-var months = {"0":"January","1":"February","2":"March","3":"April","4":"May","5":"June","6":"July",
-              "7":"August","8":"September","9":'October',"10":"November","11":"December"};
+var months = {"1":"January","2":"February","3":"March","4":"April","5":"May","6":"June","7":"July",
+              "8":"August","9":"September","10":'October',"11":"November","12":"December"};
+var week = {"1":"Sun","2":"Mon","3":"Tue","4":"Wed","5":"Thu","6":"Fri","7":"Sat"};
 
 $(document).ready(function() {
 
     $("#header").load("header.html"); 
+
 
     const urlParams = new URLSearchParams(window.location.search);
     const username = urlParams.get('username');
@@ -19,18 +21,33 @@ $(document).ready(function() {
     $.get("../php/insert.php", {'id': id, 'action': "Home"}, function(data){
         var obj = $.parseJSON(data);
         console.log(obj);
-        //data = JSON.parse(JSON.stringify(data));
 
         if(obj[0]["last_upload"] == null)
           $('.wrapper').text('YOU NEED TO UPLOAD A FILE FIRST');
         else{
-          //CALLING THE INITIALIZE MAP FUNCTION
-          initMap(obj);
-          initChart(obj.ACTIVITIES);
           //CREATE PERIOD STRING
           var period = obj["MIN"] + " - " + obj["MAX"];
           document.getElementById("period").innerHTML = period;
           document.getElementById("last_upload").innerHTML = obj[0]["last_upload"];
+
+          //POPULATE YEARS
+          var options = obj["YEARS"];
+          $('#year1').empty();
+          $('#year1').append($('<option>--OPTIONS--</option>').val(null));
+          $('#year2').append($('<option>--OPTIONS--</option>').val(null));
+          $.each(options, function(i, p) {
+              $('#year1').append($('<option></option>').val(p["YEARS"]).html(p["YEARS"]));
+              $('#year2').append($('<option></option>').val(p["YEARS"]).html(p["YEARS"]));
+          });
+
+          //POPULATE MONTHS
+          $('#month1').empty();
+          $('#month1').append($('<option>--OPTIONS--</option>').val(null));
+          $('#month2').append($('<option>--OPTIONS--</option>').val(null));
+          $.each(months, function(i, p) {
+              $('#month1').append($('<option></option>').val(i).html(p));
+              $('#month2').append($('<option></option>').val(i).html(p));
+          });
 
         }
 
@@ -69,61 +86,101 @@ $("#year").on("change",function() {
 
 });
 
+$("#display").on("click", function(){
+  //Dispose old graphs
+  if(previousPie!= null)
+    previousPie.dispose();
+
+  if(previousChart != null){
+    previousChart.dispose();
+    $("#barchart").css("display","none");
+  }
+
+  if(previousChart2 != null){
+    previousChart2.dispose();
+    $("#barchart2").css("display","none");
+  }
+  
+  var e = document.getElementById("year1");
+  var maxYEAR = e.options[e.options.length-1].value;
+  var minYEAR = e.options[1].value;
+  var year1 = e.options[e.selectedIndex].value;
+  e = document.getElementById("year2");
+  var year2 = e.options[e.selectedIndex].value;
+
+  e = document.getElementById("month1");
+  var maxMONTH = e.options[e.options.length-1].value;
+  var minMONTH = e.options[1].value;
+  var month1 = e.options[e.selectedIndex].value;
+
+  e = document.getElementById("month2");
+  var month2 = e.options[e.selectedIndex].value; 
+
+  var condition = "WHERE year(timestampMs)>=! and year(timestampMs)<=@ and month(timestampMs)>=# and month(timestampMs)<=$";
+  if(year1 != "")
+    condition = condition.replace("!",year1);
+  else
+    condition = condition.replace("!",minYEAR);
+
+  if(year2 != "")
+    condition = condition.replace("@",year2);
+  else
+    condition = condition.replace("@",maxYEAR);
+
+  if(month1 != "")
+    condition = condition.replace("#",month1);
+  else
+    condition = condition.replace("#",minMONTH);
+
+  if(month2 != "")
+    condition = condition.replace("$",month2);
+  else
+    condition = condition.replace("$",maxMONTH);
+
+  var query1 = "SELECT latitudeE7,longitudeE7 FROM Arxeio " + condition + " and user_id = '" + id +"'";
+  var query2 = "select type AS activity,count(*) AS points from Activity "+ condition + " and user_id = '" + id +"' group by type";
+
+  $.get("../php/insert.php", {'action': "Query", 'Query1':query1,'Query2':query2}, function(data){
+    data = $.parseJSON(data);
+    console.log(data);
+    initMap(data["coords"]);
+    initChart(data["activities"],condition);
+
+  }).fail(function(textStatus, error ) {
+    var err = textStatus + ", " + error;
+    console.log( "Request Failed: " + err );
+  });
+});
+
 function initMap(data){
     var obj;
+    heat.setLatLngs([]);
 
     //console.log(Object.keys(data).length);
-    console.log(data["coords"].length);
+    console.log(data.length);
 
     //DIAVASE OLA TA SHMEIA APO TO ARXEIO
-    for(var i=1; i<data["coords"].length; i++){
-        obj = data["coords"][i];
+    for(var i=1; i<data.length; i++){
+        obj = data[i];
         point1 = parseInt(obj.latitudeE7) / 10000000;
         point2 = parseInt(obj.longitudeE7) / 10000000;
         heat.addLatLng([point1,point2,0.2]);
     }
 }
 
-/* function fillDropdowns(){
-  
-  for(var i=minDate.getFullYear(); i<=maxDate.getFullYear(); i++)
-    $('#year').append($('<option></option>').val(i).html(i));  
 
-  for(x in months)
-    $('#month').append($('<option></option>').val(months[x]).html(months[x]));
-  
-} */
-
-
-function initChart(data){
-var vehicle=0,bicycle=0,foot=0,running = 0,still=0,tilting=0,unknown=0,walking=0;
-
-var array = {"IN_VEHICLE":[{"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0},{"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0,"13":0,
-              "14":0,"15":0,"16":0,"17":0,"18":0,"19":0,"20":0,"21":0,"22":0,"23":0}],
-              "ON_BICYCLE":[{"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0},{"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0,"13":0,
-              "14":0,"15":0,"16":0,"17":0,"18":0,"19":0,"20":0,"21":0,"22":0,"23":0}],
-              "ON_FOOT":[{"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0},{"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0,"13":0,
-              "14":0,"15":0,"16":0,"17":0,"18":0,"19":0,"20":0,"21":0,"22":0,"23":0}],
-              "RUNNING":[{"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0},{"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0,"13":0,
-              "14":0,"15":0,"16":0,"17":0,"18":0,"19":0,"20":0,"21":0,"22":0,"23":0}],
-              "STILL":[{"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0},{"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0,"13":0,
-              "14":0,"15":0,"16":0,"17":0,"18":0,"19":0,"20":0,"21":0,"22":0,"23":0}],
-              "TILTING":[{"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0},{"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0,"13":0,
-              "14":0,"15":0,"16":0,"17":0,"18":0,"19":0,"20":0,"21":0,"22":0,"23":0}],
-              "UNKNOWN":[{"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0},{"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0,"13":0,
-              "14":0,"15":0,"16":0,"17":0,"18":0,"19":0,"20":0,"21":0,"22":0,"23":0}],
-              "WALKING":[{"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0},{"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0,"13":0,
-              "14":0,"15":0,"16":0,"17":0,"18":0,"19":0,"20":0,"21":0,"22":0,"23":0}]
-            };
+function initChart(data,condition){
 
   //GRAFIKES PARASTASEIS
     am4core.ready(function() {
 
         // Themes begin
         am4core.useTheme(am4themes_animated);
-
+        
         // Create chart instance
+        $("#piechart").show();
         var chart = am4core.create("piechart", am4charts.PieChart);
+        previousPie = chart;
 
         //PERNAME TA DEDOMENA STO CHART
         for(var i=0; i<data.length; i++)
@@ -144,18 +201,18 @@ var array = {"IN_VEHICLE":[{"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0},{"0":0,"1
         chart.radius = 100;
 
         pieSeries.slices.template.events.on("hit", function(ev){
-
           $("#barchart").show();
           $("#barchart2").show();
 
           var category = ev.target.dataItem.category;
-          var query1 = "SELECT hour(subTimestampMs) AS time,count(*) AS points FROM `Activity` WHERE user_id='" 
+          var query1 = "SELECT hour(subTimestampMs) AS time,count(*) AS points FROM `Activity` " +condition + " and user_id='" 
                         + id + "' and type = '" + category +"' GROUP BY hour(subTimestampMs)";
-          var query2 = "SELECT dayofweek(subTimestampMs) AS time,count(*) AS points FROM `Activity` WHERE user_id='" 
+          var query2 = "SELECT dayofweek(subTimestampMs) AS time,count(*) AS points FROM `Activity` "+condition+" and user_id='" 
                         + id + "' and type = '" + category +"' GROUP BY dayofweek(subTimestampMs)";
 
-          var copyData;              
-          $.get("../php/insert.php", {'action': "Query", 'Query1':query1, 'Query2':query2}, function(data){
+          $.get("../php/insert.php", {'action': "Query2", 'Query1':query1, 'Query2':query2}, function(data){
+            data = JSON.parse(data);
+            console.log(data);
             initBarChart1(data);
             initBarChart2(data);
           });
@@ -168,10 +225,10 @@ var array = {"IN_VEHICLE":[{"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0},{"0":0,"1
 }
 
 function initBarChart1(data){
-    data = JSON.parse(data);
 
+    //Dispose previous chart
     if(previousChart!= null)
-    previousChart.dispose();
+      previousChart.dispose();
 
     //CREATE BARCHART
     var barChart = am4core.create("barchart", am4charts.XYChart);
@@ -215,9 +272,7 @@ function initBarChart1(data){
 }
 
 function initBarChart2(data){
-  data = JSON.parse(data);
-
-  //DAY OF THE WEEK CHART
+  //Dispose previous chart
   if(previousChart2!= null)
     previousChart2.dispose();
 
@@ -225,8 +280,10 @@ function initBarChart2(data){
   var barChart2 = am4core.create("barchart2", am4charts.XYChart);
   previousChart2 = barChart2;
 
-  for(var i=0; i<data["MAX_DAYOFWEEK"].length; i++)
+  for(var i=0; i<data["MAX_DAYOFWEEK"].length; i++){
+    data["MAX_DAYOFWEEK"][i]["time"] = week[i+1];
     barChart2.data[i] = data["MAX_DAYOFWEEK"][i];
+  }
 
   barChart2.padding(40, 40, 40, 40);
 

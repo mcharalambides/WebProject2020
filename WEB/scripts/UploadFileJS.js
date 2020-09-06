@@ -66,6 +66,7 @@ $("#increase").on("click", function() {
 $("#remove").on("click", function() {
     
     map.removeLayer(previousCircle);
+    center=0;finalRadius=0;
 
 });
 
