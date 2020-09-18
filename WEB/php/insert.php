@@ -33,6 +33,13 @@ if($action == 'LogOut'){
 $data = json_decode(file_get_contents("php://input"));
 
 if($action == "Register"){
+    //Get FirstName and LastName 
+    if(isset($_GET["firstName"]))
+    $first = ($_GET["firstName"]); 
+
+    if(isset($_GET["lastName"]))
+    $last = ($_GET["lastName"]); 
+
     //2-WAY ENCRYPTION
     $cipher = "aes-128-gcm";
     $ivlen = openssl_cipher_iv_length($cipher);
@@ -42,9 +49,13 @@ if($action == "Register"){
     //HASHING PASSWORD
     $pass = password_hash($pass, PASSWORD_DEFAULT);
 
-    $response = mysqli_query($link,"INSERT INTO Users(id,username,password,email)VALUES('".$id."','".$usrname."','".$pass."','".$email."')");
-    if($response)
-    header('Location: ../templates/login.html');
+    $response = mysqli_query($link,"INSERT INTO Users(id,username,password,email,FirstName,LastName)VALUES('".$id."','".$usrname."','".$pass."','".$email."','".$first."','".$last."')");
+    if($response){
+        echo '<script language="javascript"> 
+        alert("Registration was succesful you will be redirected to login page");
+        window.location.href=" ../templates/login.html";
+        </script>';
+    }
 
 }
 else if($action == "Home"){
@@ -73,6 +84,15 @@ else if($action == "Home"){
     $temp3 = $temp3->fetch_all(MYSQLI_ASSOC);
     $ACTIVITIES = $temp3;
 
+    //GET SCORE FOR LAST 12 MONTHS
+    $score2 = mysqli_query($link,"CALL proc2('".$id."')");
+    $score2 = mysqli_query($link,"select * from UserScores where score is not null");
+    $score2 = $score2->fetch_all(MYSQLI_ASSOC);
+    //GET TOP 3 SCORERS
+    $score = mysqli_query($link,"CALL proc()");
+    $score = mysqli_query($link,"SELECT concat(Users.FirstName,' ',substring(Users.LastName,1,1)) AS 'USER',UserScores.score,UserScores.month FROM `UserScores` LEFT JOIN Users on Users.id=UserScores.user_id WHERE UserScores.score is not null ORDER BY UserScores.score ASC LIMIT 0,3");
+    $score = $score->fetch_all(MYSQLI_ASSOC);
+
     $response2 = mysqli_query($link,"SELECT latitudeE7,longitudeE7 FROM Arxeio WHERE user_id='".$id."'");
     $response2 = $response2->fetch_all(MYSQLI_ASSOC);
     $response["ACTIVITIES"] = $ACTIVITIES;
@@ -80,6 +100,8 @@ else if($action == "Home"){
     $response["MAX"] = $max; 
     $response["MIN"] = $min;
     $response["YEARS"] = $YEARS;
+    $response["12MONTHS"] = $score2;
+    $response["LEADERBOARD"] = $score;
     echo json_encode($response);
 }
 else if ($action == "Query"){

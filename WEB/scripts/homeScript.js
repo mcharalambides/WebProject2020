@@ -72,11 +72,7 @@ $(document).ready(function() {
       radius: 10000
     }).addTo(map);
     
-     heat = L.heatLayer([], {radius: 25}).addTo(map);
-
-     map.on('click', function(e){
-       console.log(e.latlng);
-     });
+     heat = L.heatLayer([], {radius: 25}).addTo(map)
 
 });
 

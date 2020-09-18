@@ -25,7 +25,6 @@ if(isset($_POST['submit'])){
         exit;  
     }
 
-    //
     $myfile = fopen($fileTmpName, "r") or die("Unable to open file!");
     $myObject = json_decode(fread($myfile, filesize($fileTmpName)), true);
 
@@ -39,8 +38,6 @@ if(isset($_POST['submit'])){
       $myString = "";
       $sql2 ="INSERT INTO Activity(user_id,timestampMs,subTimestampMs,type) VALUES ";
       $myString2 = "";  
-        /* $sql3 ="INSERT INTO ActivityType(user_id,timestampMs,subTimestampMs,Type) VALUES ";
-        $myString3 = ""; */
 
     $flag = false;  
     for ($i = 0; $i < count($myObject["locations"]); $i++) {
