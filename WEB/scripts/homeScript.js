@@ -30,6 +30,8 @@ $(document).ready(function() {
           document.getElementById("period").innerHTML = period;
           document.getElementById("last_upload").innerHTML = obj[0]["last_upload"];
 
+          //POPULATE SCORE TABLE
+          populateScore(obj['LEADERBOARD'], obj['12MONTHS']);
           //POPULATE YEARS
           var options = obj["YEARS"];
           $('#year1').empty();
@@ -80,11 +82,20 @@ $(document).ready(function() {
 
 });
 
-$("#year").on("change",function() {
+function populateScore(leaderboard,months){
 
-  console.log(minDate,maxDate);
-
-});
+  var length = leaderboard.length;
+  console.log(length);
+  var table = document.getElementById("scoreTable");
+  console.log(table.id);
+  var tr;
+  for(var i=0; i<length; i++){
+    tr = table.insertRow(i+1);
+    tr.insertCell(0).innerHTML = i+1;
+    tr.insertCell(1).innerHTML = leaderboard[i]["USER"];
+    tr.insertCell(2).innerHTML = leaderboard[i]["score"];
+    }
+}
 
 $("#display").on("click", function(){
   //Dispose old graphs
