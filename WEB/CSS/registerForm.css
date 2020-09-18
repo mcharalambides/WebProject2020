@@ -1,5 +1,5 @@
 body {
-	  background-image: url("../img/login-bg.png");
+	background-image: linear-gradient(90deg, #4AA5F0, #6700bf);
 }
 
 .signup-form {
@@ -35,3 +35,27 @@ body {
 	text-decoration: none;
 }
 
+label
+{
+    width: 100px;
+}
+
+.alert
+{
+    display: none;
+}
+
+.requirements
+{
+    list-style-type: none;
+}
+
+.wrong .fa-check
+{
+    display: none;
+}
+
+.good .fa-times
+{
+    display: none;
+}
