@@ -1,5 +1,5 @@
 body {
-    background-image: linear-gradient(90deg, #4AA5F0, #6700bf);
+	  background-image: url("../img/login-bg.png");
 }
 
 .login-form {
