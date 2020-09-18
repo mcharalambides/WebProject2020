@@ -4,68 +4,119 @@
            <meta charset="utf-8">
            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
            <title>HEATMAP PROJECT</title>
-           <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+           <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
            <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
            <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+           <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
            <link type="text/css" rel="stylesheet" href="../CSS/styling.css">
       </head>
       <body>
 
-          <!-- NAVIGATION BAR -->
-          <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                 <span class="navbar-toggler-icon"></span>
-               </button>
-               <div class="collapse navbar-collapse" id="navbarCollapse">
-                 <ul class="navbar-nav mr-auto">
-                   <li class="nav-item active">
-                     <a class="nav-link" id="homeLink">Home <span class="sr-only">(current)</span></a>
-                   </li>
-                   <li class="nav-item">
-                     <a class="nav-link" id="uploadFileLink">Upload File</a>
-                   </li>
-                   <li class="nav-item">
-                     <a class="nav-link" href="../php/insert.php?action=LogOut">Log Out</a>
-                   </li>
-                 </ul>
-               </div>
-             </nav>
-
-          <!--<div class="header">
-               <div class="header-left">
-                 <a id="homeLink">Home</a>
-                 <a id="uploadFileLink">Upload File</a>
-                 <a href="../php/insert.php?action=LogOut">Log Out</a>
-               </div>
-             </div>-->
+          <!-- Navigation -->
+    <nav class="navbar bg-dark navbar-expand-lg navbar-dark sticky-top">
+     <div class="container px-3">
+         
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+         <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarResponsive">
+             <ul class="navbar-nav ml-auto">
+                 <li class="nav-item"><a id="homeLink" class="nav-link">Home</a></li>
+                 <li class="nav-item"><a id="uploadFileLink" class="nav-link">Upload</a></li>
+                 <li class="nav-item"><a href="../php/insert.php?action=LogOut" class="nav-link">Logout</a></li>
+             </ul>
+         </div>
+     </div>
+ </nav>
 
           <!-- NAVIGATION BAR END -->
 
+<<<<<<< HEAD
           <!-- Upload Section -->
           <form id="myForm" class="uploadForm" action="../php/upload.php" method="POST" enctype="multipart/form-data">
                <div class="input-group">
                     <div class="custom-file">
                       <input type="file" class="custom-file-input" id="fileUL" name="upload">
                       <label class="custom-file-label" for="fileUL">Choose file</label>
+=======
+
+          <div class="container pt-5">
+               <div class="row">
+                    <div class="col-6-xs mt-4 mb-3">
+                         <form class="uploadForm" action="../php/upload.php" method="POST" enctype="multipart/form-data">
+                              <div class="input-group">
+                                   <div class="custom-file">
+                                     <input type="file" class="custom-file-input" id="fileUL" name="upload">
+                                     <label class="custom-file-label" for="fileUL">Choose file</label>
+                                   </div>
+                                   <div class="input-group-append">
+                                     <button class="btn btn-outline-secondary" id="fileUpload" type="submit" name="submit">UPLOAD</button>
+                                   </div>
+                                   <input type="hidden" name="username" id="user">
+                                   <input type="hidden" name="id" id="id">
+                              </div>
+                         </form>
+>>>>>>> e6e0dd581171d0a9dc149f0fbb914714562d0df2
                     </div>
-                    <div class="input-group-append">
-                      <button class="btn btn-outline-secondary" id="fileUpload" type="submit" name="submit">UPLOAD</button>
+                    <div class="col-6-xs">
+                         <div>
+                              <div class="container">
+                                   <div class="">
+                                        <div class="mb-1">CIRCLE SIZE</div>
+                                   </div>
+                                   <button class="btn btn-outline-secondary btn-sm" id="increase">+</button>
+                                   <button class="btn btn-outline-secondary btn-sm"  id="decrease">-</button>
+                                   <button class="btn btn-outline-secondary btn-sm" id="remove">remove</button>
+                              </div>
                     </div>
-                    <input type="hidden" name="username" id="user">
-                    <input type="hidden" name="id" id="id">
                </div>
-          </form>
+          </div>
+
+
+          <!-- Upload Section -->
+
+          <!--<div class="container">
+               <div class="pt-5">
+                    <form class="uploadForm" action="../php/upload.php" method="POST" enctype="multipart/form-data">
+                         <div class="input-group">
+                              <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="fileUL" name="upload">
+                                <label class="custom-file-label" for="fileUL">Choose file</label>
+                              </div>
+                              <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" id="fileUpload" type="submit" name="submit">UPLOAD</button>
+                              </div>
+                              <input type="hidden" name="username" id="user">
+                              <input type="hidden" name="id" id="id">
+                         </div>
+                    </form>
+               </div>
+          </div>-->
           <script>
                // script gia na emfanizete to onoma tou arxio mesa stin bara
                $(".custom-file-input").on("change", function() {
                  var fileName = $(this).val().split("\\").pop();
                  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
                });
-               </script>
+          </script>
+          
+          <!--<div style="text-align: center;">
+               <div class="container">
+                    <div class="mt-3">
+                         <div><b>CIRCLE SIZE</b></div>
+                    </div>
+                    <button id="increase">+</button>
+                    <button id="decrease">-</button>
+                    <button id="remove">remove</button>
+               </div>
+          </div>-->
+     </div>
+</div>
+
           <!--<form id="myForm" action="../php/upload.php" method="POST" enctype="multipart/form-data">
                <table style="margin: auto;">
                     <tbody>     
@@ -81,25 +132,30 @@
                <input type="hidden" name="id" id="id">
           </form> -->
 
-          <div style="text-align: center;">
-               <div><b>CIRCLE SIZE</b></div>
-               <div>
-                    <button id="increase">+</button>
-                    <button id="decrease">-</button>
-                    <button id="remove">remove</button>
-               </div>
-          </div>
-          <br>
-          <div id="map"></div>
+          
+         
+<div class="" id="map-section">
+     <div class="container ">
+         <div class="pt-5 mb-5">
+             <div class="rounded" id="map"></div>
+         </div>
+     </div>
+     
+ </div>
+
+ <footer class="map-bg">
+ </footer>
                 
-          <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+          
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="../scripts/UploadFileJS.js"></script>
       </body>
 
-      <script src="../scripts/jquery.js"></script>
+      <!--<script src="../scripts/jquery.js"></script>-->
       <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script> -->
-      <script src="../scripts/UploadFileJS.js"></script>
+      
      <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
 <!--      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script> -->

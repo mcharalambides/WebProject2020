@@ -14,7 +14,7 @@ $(document).ready(function() {
     document.getElementById("homeLink").setAttribute('href','home.html?username='+username+'&id='+id);
 
     //INITIALIZE MAP
-    map = L.map('map').setView([38.230462,21.753150], 13);//KENTRO THS PATRAS
+    map = L.map('map').setView([38.230462,21.753150], 12);//KENTRO THS PATRAS
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
