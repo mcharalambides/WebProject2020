@@ -1,120 +1,296 @@
 <!DOCTYPE html>
- <html>
-      <head>
-           <meta charset="utf-8">
-           <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-           <title>HEATMAP PROJECT</title>
-           <!-- Bootstrap CSS -->
-           <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-           <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
-           <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
-           <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
-           <link type="text/css" rel="stylesheet" href="../CSS/styling.css"/>
-      </head>
-      <body>
-           <!-- NAVIGATION BAR -->
-           <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark"> <!-- fixed-top or sticky-top -->
-               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                 <span class="navbar-toggler-icon"></span>
-               </button>
-               <div class="collapse navbar-collapse" id="navbarCollapse">
-                 <ul class="navbar-nav mr-auto">
-                   <li class="nav-item active">
-                     <a class="nav-link" id="homeLink">Home <span class="sr-only">(current)</span></a>
-                   </li>
-                   <li class="nav-item">
-                     <a class="nav-link" id="uploadFileLink">Upload File</a>
-                   </li>
-                   <li class="nav-item">
-                     <a class="nav-link" href="../php/insert.php?action=LogOut">Log Out</a>
-                   </li>
-                 </ul>
-               </div>
-             </nav>
-                        
-          <!--<div class="header">
-               <div class="header-left">
-                 <a id="homeLink">Home</a>
-                 <a id="uploadFileLink">Upload File</a>
-                 <a href="../php/insert.php?action=LogOut">Log Out</a>
-               </div>
-             </div>-->
-          <!-- NAVIGATION BAR END -->
 
-          <table class="table table-borderless table-sm">
-               <thead>
-                    <tr>
-                         <th id="userInfo" scope="col" colspan="2">User Info</th>
-                    </tr>
-               </thead>
-               <tbody>
-                    <!--<tr style="text-align: center;"><th>ΣΤΟΙΧΕΙΑ</th></tr>-->
-                    <tr>
-                         <th scope="row">USERNAME : </th>
-                         <td id="username"></td>
-                    </tr>
-                    <tr>
-                         <th scope="row">EMAIL : </th>
-                         <td id="email"></td>
-                    </tr>
-                    <tr>
-                         <th scope="row">PERIOD : </th>
-                         <td id="period"></td>
-                    </tr>
-                    <tr>
-                         <th scope="row">LAST UPLOAD : </th>
-                         <td id="last_upload"></td>
-                    </tr>
-               </tbody>
-          </table>          
+<html>
 
-          <br>
-          <div class="wrapper">
-               <table style="margin: auto;">
-                    <tbody>
-                         <tr>
-                              <td></td>
-                              <td>FROM</td>
-                              <td>TO</td>
-                         </tr>
-                         <tr>
-                              <td>YEAR : </td>
-                              <td><select required  id="year1"  class="" >
-                              </select></td>
-                              <td><select id="year2"  class="" >
-                              </select></td>
-                         </tr>
-                         <tr>
-                              <td>MONTH : </td>
-                              <td><select required  id="month1"  class="">
-                              </select></td>
-                              <td><select  id="month2"  class="" >
-                              </select></td>
-                         </tr>
-                         <tr>
-                              <td><button id="display"><b>DISPLAY</b></button></td>
-                         </tr>
-                    </tbody>
-               </table>
-               <div  style="display: none;" id="piechart"></div>
-               <div style="display: none;" id="barchart2"></div>
-          </div>
-          <div style="display: none;" id="barchart"></div>
-          <br>
-          <div id="map"></div>
-          
-          <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Crowdsourcing System</title>
+    <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="" />
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    <!-- Style CSS -->
+    <link type="text/css" rel="stylesheet" href="../CSS/styling.css" />
+</head>
+
+<body>
+    <!-- Start Landing Header-->
+    <div class="landing ">
+        <h1>Crowdsourcing System Project</h1>
+        <h4>Begin your expiriance by uploading your data first!</h4>
+        <div class="row home justify-content-center text-center px-md-5 px-lg-0">
+            <!--<div class="col-3 col-sm-2 col-lg-1 p-0">
+               test
+               </div>
+               
+               <div class="col-3 col-sm-2 col-lg-1 p-0">
+               test
+               </div>
+               
+               <div class="col-3 col-sm-2 col-lg-1 p-0">
+               test
+               </div>
+               
+               <div class="col-3 col-sm-2 col-lg-1 p-0">
+               test
+               </div>-->
+        </div>
+    </div>
+    <!-- End Landing Header -->
+    <!-- Navigation -->
+    <nav class="navbar bg-dark navbar-expand-lg navbar-dark sticky-top">
+        <div class="container px-3">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a id="homeLink" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a id="uploadFileLink" class="nav-link">Upload</a></li>
+                    <li class="nav-item"><a href="#data-section" class="nav-link">Data</a></li>
+                    <li class="nav-item"><a href="#map-section" class="nav-link">Map</a></li>
+                    <li class="nav-item"><a href="../php/insert.php?action=LogOut" class="nav-link">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Heading -->
+    <div class="container">
+        <div class="row py-0 py-md-3 py-lg-5">
+            <div class="col-12 text-center  mt-5">
+                <div class="margin-bottom-sm">
+                    <div>
+                        <h1>User Information</h1>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>USERNAME</th>
+                                    <th>EMAIL </th>
+                                    <th>PERIOD </th>
+                                    <th>LAST UPLOAD </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td id="username">Fetching data from database...</td>
+                                    <td id="email">Fetching data from database...</td>
+                                    <td id="period">Fetching data from database...</td>
+                                    <td id="last_upload">Fetching data from database...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Three Column Section -->
+    <div id="data-section" class="container pb-4">
+        <div class="row py-0 py-md-3 py-lg-5">
+            <div class="col-12 text-uppercase mt-5">
+                <div class="margin-bottom-sm">
+                    <div>
+                        <h1 class="text-center">Data Range</h1>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">From</th>
+                                    <th scope="col">To </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Year</th>
+                                    <td><select required id="year1" class=""></select></td>
+                                    <td><select id="year2" class=""></select></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Month</th>
+                                    <td><select required id="month1" class=""></select></td>
+                                    <td><select id="month2" class=""></select></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <a id="display" class="btn btn-outline-dark btn-lg">Display Data</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Start Fixed Background IMG -->
+    <div class="fixed-background">
+        <div class="col-12 text-center text-uppercase mt-5">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div id="piechart">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div id="barchart2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fixed-wrap">
+            <div class="fixed"></div>
+        </div>
+    </div>
+    <!-- End Fixed Background IMG -->
+
+    <div class="col-12 text-center mt-5">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg">
+                    <div id="barchart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Heading -->
+        <div class="map-bg" id="map-section">
+            <div class="container ">
+                <div class="pt-5 pb-4">
+                    <div class="rounded" id="map"></div>
+                </div>
+            </div>
+            
+        </div>
+
+    <!-- End Two Column Section -->
+    <!-- End Three Column Section -->
+    <!-- End Navigation -->
+    <!-- NAVIGATION BAR OLD -->
+    <!--<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+           <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarCollapse">
+           <ul class="navbar-nav mr-auto">
+             <li class="nav-item active">
+               <a class="nav-link" id="homeLink">Home <span class="sr-only">(current)</span></a>
+             </li>
+             <li class="nav-item">
+               <a class="nav-link" id="uploadFileLink">Upload File</a>
+             </li>
+             <li class="nav-item">
+               <a class="nav-link" href="../php/insert.php?action=LogOut">Log Out</a>
+             </li>
+           </ul>
+         </div>
+         </nav>-->
+    <!--<div class="header">
+         <div class="header-left">
+           <a id="homeLink">Home</a>
+           <a id="uploadFileLink">Upload File</a>
+           <a href="../php/insert.php?action=LogOut">Log Out</a>
+         </div>
+         </div>-->
+    <!-- NAVIGATION BAR END -->
+    <!-- USER INFO START -->
+    <!--<div class="table-responsive-sm">
+         <table class="table table-bordered table-sm w-auto">
+              <thead class="thead-light">
+                   <tr>
+                        <th class="text-center" scope="col" colspan="2">User Info</th>
+                   </tr>
+              </thead>
+              <tbody>
+                   <!--<tr style="text-align: center;"><th>ΣΤΟΙΧΕΙΑ</th></tr>-->
+    <!--<tr class="table-info">
+         <th scope="row">USERNAME : </th>
+         <td id="username">Fetching info from database...</td>
+         </tr>
+         <tr class="table-info">
+         <th scope="row">EMAIL : </th>
+         <td id="email">Fetching info from database...</td>
+         </tr>
+         <tr class="table-info">
+         <th scope="row">PERIOD : </th>
+         <td id="period">Fetching info from database...</td>
+         </tr>
+         <tr class="table-info">
+         <th scope="row">LAST UPLOAD : </th>
+         <td id="last_upload">Fetching info from database...</td>
+         </tr>
+         </tbody>
+         </table>
+         </div>
+         
+         <!-- USER INFO END -->
+    <!-- YEAR AND MONTH SECTION START -->
+    <!-- <table class="table">
+         <thead>
+              <tr>
+                   <th scope="col">Data Range</th>
+              </tr>
+         </thead>
+         <tbody>
+              <tr>
+                   <td>From: </td>
+                   <td>To: </td>
+              </tr>
+         </tbody>
+         </table>
+         
+         <!--<div class="wrapper">
+         <table style="margin: auto;">
+              <tbody>
+                   <tr>
+                        <td></td>
+                        <td>FROM</td>
+                        <td>TO</td>
+                   </tr>
+                   <tr>
+                        <td>YEAR : </td>
+                        <td><select required  id="year1"  class="" >
+                        </select></td>
+                        <td><select id="year2"  class="" >
+                        </select></td>
+                   </tr>
+                   <tr>
+                        <td>MONTH : </td>
+                        <td><select required  id="month1"  class="">
+                        </select></td>
+                        <td><select  id="month2"  class="" >
+                        </select></td>
+                   </tr>
+                   <tr>
+                        <td><button id="display"><b>DISPLAY</b></button></td>
+                   </tr>
+              </tbody>
+         </table>
+         <div  style="display: none;" id="piechart"></div>
+         <div style="display: none;" id="barchart2"></div>
+         </div>-->
+    <!-- YEAR AND MONTH SECTION END -->
+    <!--<div style="display: none;" id="barchart"></div>
+         <br>
+         <div id="map"></div> -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-      </body>
-      <script src="../scripts/jquery.js"></script>
-      <script src="../scripts/homeScript.js"></script>
-      <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
-     <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
-     <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
-     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
+</body>
+<script src="../scripts/jquery.js"></script>
+<script src="../scripts/homeScript.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
 <!--      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script> -->
-     <script src="leaflet-heat.js"></script>
-     <script src="HeatLayer.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script> -->
+<script src="leaflet-heat.js"></script>
+<script src="HeatLayer.js"></script>
+
 </html>
