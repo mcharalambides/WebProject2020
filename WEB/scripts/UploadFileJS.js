@@ -3,9 +3,16 @@ var map;
 var center=0,finalRadius=0;
 $(document).ready(function() {
 
-    const urlParams = new URLSearchParams(window.location.search);
+    /* const urlParams = new URLSearchParams(window.location.search);
     const username = urlParams.get('username');
-    const id = urlParams.get('id');
+    const id = urlParams.get('id'); */
+    var url = new URL(document.URL);
+    var urlParams = url.search;
+    var urlParams = urlParams.slice(1,urlParams.length);
+    var params = urlParams.split("&");
+    const username = params[1].replace("username=","");
+    id = params[0].replace("id=","");
+    console.log(id);
 
     document.getElementById("homeLink").setAttribute('href','home.html?username='+username );
     document.getElementById("user").value = username;
