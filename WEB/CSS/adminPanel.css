@@ -8,51 +8,7 @@ body {
 }
 
 
-/*=== LANDING GRADIENT ===*/
-
-.landing {
-    text-align: center;
-    background-image: linear-gradient(90deg, #4AA5F0, #6700bf);
-}
-
-.center {
-    margin: auto;
-    width: 50%;
-    padding: 10px;
-  }
-
-
-  /*=== HEADINGS & ICONS ===*/
-
-.landing h4 {
-    color: white;
-    font-weight: 200;
-    font-size: 1.6rem;
-    letter-spacing: .1rem;
-    text-shadow: .05rem .05rem .05rem rgba(0, 0, 0, .15);
-    padding: 1.8rem 0;
-}
-
-.landing h1 {
-    color: white;
-    font-weight: 200;
-    padding-top: 7rem;
-    font-size: 3rem;
-    letter-spacing: .2rem;
-    text-shadow: .05rem .05rem .05rem rgba(0, 0, 0, .15);
-}
-
-.landing home {
-    padding-top: 7rem;
-}
-
-
 /*=== NAVIGATION ===*/
-
-.navbar-brand img {
-    height: 3rem;
-    padding-top: .2rem;
-}
 
 .navbar {
     background-image: linear-gradient(90deg, #4AA5F0, #6700bf);
@@ -102,48 +58,20 @@ h3 {
 
 
 /*=== FOOTER ===*/
+footer{
+   position: flex; 
+   top: 80%; 
+   left: 0; 
+   right: 0; 
+   bottom: 0;
+   min-width: 100px;
+ }
 
-
-/*=== SOCKET ===*/
-
-
-/*============= MEDIA QUERIES =============*/
-
-
-/* Devices under 1199px (xl) */
-
-@media (max-width: 1199.98px) {}
-
-
-/* Devices under 992px (xl) */
-
-@media (max-width: 991.98px) {}
-
-
-/* Devices under 768px (md) */
-
-@media (max-width: 767.98px) {}
-
-
-/*============ BOOTSTRAP BREAK POINTS:
-
-Extra small (xs) devices (portrait phones, less than 576px)
-No media query since this is the default in Bootstrap
-
-Small (sm) devices (landscape phones, 576px and up)
-@media (min-width: 576px) { ... }
-
-Medium (md) devices (tablets, 768px and up)
-@media (min-width: 768px) { ... }
-
-Large (lg) devices (desktops, 992px and up)
-@media (min-width: 992px) { ... }
-
-Extra (xl) large devices (large desktops, 1200px and up)
-@media (min-width: 1200px) { ... }
-
-=============*/
-
+.container {
+  position: relative;
+  width: 980px;
+  margin:0 auto;
+}
 
 /*-- Bootstrap Mobile Gutter Fix --*/
 
@@ -197,11 +125,6 @@ Extra (xl) large devices (large desktops, 1200px and up)
     display: none;
 }
 
-#barchart3 {
-    width: 100%; 
-    height: 370px;
-}
-
 #barchart2 {
     width: 100%; 
     height: 370px;
@@ -218,13 +141,4 @@ Extra (xl) large devices (large desktops, 1200px and up)
     padding: 12rem 0;
     box-shadow: 0 0 1rem rgba(0, 0, 0, .5);
     
-  }
-
-  footer{
-    position: fixed; 
-    top: 80%; 
-    left: 0; 
-    right: 0; 
-    bottom: 0;
-    min-width: 200px;
   }

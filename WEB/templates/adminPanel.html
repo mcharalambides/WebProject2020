@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Admin Panel</title>
+    <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="" />
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    <!-- Style CSS -->
+    <link type="text/css" rel="stylesheet" href="../CSS/adminPanel.css" />
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar bg-dark navbar-expand-lg navbar-dark sticky-top">
+        <div class="container px-3">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a href="#dashboard-section" class="nav-link">Dashboard</a></li>
+                    <li class="nav-item"><a href="#mapSettings-section" class="nav-link">MAP Settings</a></li>
+                    <li class="nav-item"><a href="#map-section" class="nav-link">Map</a></li>
+                    <li class="nav-item"><a href="#dataExp-section" class="nav-link">Data Export</a></li>
+                    <li class="nav-item"><a href="../php/insert.php?action=LogOut" class="nav-link">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard START -->
+    <div class="container" id="dashboard-section">
+        <div class="row py-0 py-md-3 py-lg-5">
+            <div class="col-12 text-center  mt-5 border border-dark rounded">
+                <div class="margin-bottom-sm">
+                    <div>
+                        <h1>Database Dashboard</h1>
+                        <div class="border-top border-dark w-50 mx-auto"></div>
+                    </div>
+                    <div class="py-0 py-md-3 py-lg-3">
+                       <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-outline-dark btn-md active">
+                          <input type="radio" name="options" id="option1" autocomplete="off"> Activities
+                        </label>
+                        <label class="btn btn-outline-dark btn-md active">
+                           <input type="radio" name="options" id="option1" autocomplete="off" active> User Records
+                         </label>
+                         <label class="btn btn-outline-dark btn-md active">
+                           <input type="radio" name="options" id="option1" autocomplete="off"> Monthly Records
+                         </label>
+                         <label class="btn btn-outline-dark btn-md active">
+                           <input type="radio" name="options" id="option1" autocomplete="off"> Daily Records
+                         </label>
+                         <label class="btn btn-outline-dark btn-md active">
+                           <input type="radio" name="options" id="option1" autocomplete="off"> Hourly Records
+                         </label>
+                         <label class="btn btn-outline-dark btn-md active">
+                           <input type="radio" name="options" id="option1" autocomplete="off"> Yearly Records
+                         </label>
+                        </div>
+                     </div>
+                     <!--HERE GOES THE GRAPHICSSS-->
+
+                     <!--END FOR THE GRAPHICSSS-->
+                </div>
+            </div>
+        </div>
+    </div>
+ <!-- Dashboard END -->
+
+    <!-- MAP DATA RANGE START -->
+    <div id="mapSettings-section" class="container pb-4">
+        <div class="row py-0 py-md-3 py-lg-5">
+            <div class="col-12 text-uppercase mt-5 border border-dark rounded">
+                <div class="margin-bottom-sm mb-3">
+                    <div>
+                        <h1 class="text-center">Map Data Range</h1>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">From</th>
+                                    <th scope="col">To </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Year</th>
+                                    <td><select required id="year1" class=""></select></td>
+                                    <td><select id="year2" class=""></select></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Month</th>
+                                    <td><select required id="month1" class=""></select></td>
+                                    <td><select id="month2" class=""></select></td>
+                                </tr>
+                                <tr>
+                                 <th scope="row">Day</th>
+                                 <td><select required id="day1" class=""></select></td>
+                                 <td><select id="day2" class=""></select></td>
+                             </tr>
+                             <tr>
+                              <th scope="row">Hour</th>
+                              <td><select required id="hour1" class=""></select></td>
+                              <td><select id="hour1" class=""></select></td>
+                          </tr>
+                            </tbody>
+                        </table>
+                        <a id="displayOnMap" class="btn btn-outline-dark btn-lg">Display Data</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- MAP DATA RANGE END -->
+
+
+    <!-- Start Fixed Background IMG -->
+    <div class="fixed-background">
+       <!--MAP HERE-->
+       <div>
+          <div class="container" id="map-section">
+             <div class="pt-5 pb-4">
+                 <div class="rounded" id="map"></div>
+               </div>
+            </div>
+         </div>
+         <!--MAP ENDS HERE-->
+        <div class="fixed-wrap">
+            <div class="fixed"></div>
+        </div>
+    </div>
+    <!-- End Fixed Background IMG -->
+
+    <!--DATA EXPORT/DELETE SECTION START-->
+    <div class="container" id="dataExp-section">
+      <div class="row py-0 py-md-3 py-lg-5">
+          <div class="col-12 text-center  mt-5">
+              <div class="margin-bottom-sm">
+                  <div>
+                      <h1>Data Export & Delete</h1>
+                      <div class="border-top border-dark w-50 mx-auto"></div>
+                  </div>
+                  <div class="row py-0 py-md-3 py-lg-3 d-flex justify-content-center">
+                     <div class="dropdown pr-1">
+                        <button class="btn btn-outline-dark btn-lg dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Export
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                          <button class="dropdown-item" type="button">to CSV</button>
+                          <button class="dropdown-item" type="button">to XML</button>
+                          <button class="dropdown-item" type="button">to JSON</button>
+                        </div>
+                      </div>
+                      <div class="pl-1">
+                        <a id="dataDelete" class="btn btn-outline-dark btn-lg">Delete</a>
+                      </div>
+                        
+                   </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!--DATA EXPORT/DELETE SECTION END-->
+
+  <!--FOOTER START-->
+  <!--FOOTER START-->
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="../scripts/jquery.js"></script>
+<script src="../scripts/adminScript.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
+<script src="leaflet-heat.js"></script>
+<script src="HeatLayer.js"></script>
+</body>
+
+
+</html>

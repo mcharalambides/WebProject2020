@@ -36,8 +36,8 @@
           <!-- NAVIGATION BAR END -->
 
 
-          <div class="container pt-5">
-                    <div class="center">
+          <div class="container pt-5 d-flex justify-content-center">
+               <div class="row">
                     <div class="col-6-xs mt-4 mb-3">
                          <form id="myForm" class="uploadForm" action="../php/upload.php" method="POST" enctype="multipart/form-data">
                               <div class="input-group">
@@ -53,17 +53,19 @@
                               </div>
                          </form>
                     </div>
-               </div>
-               <div class="center">
-                    <div class="col-6-xs">   
+                    <div class="col-6-xs">
+                         <div>
                               <div class="container">
-                                   <div class="mb-1">CIRCLE SIZE</div>
+                                   <div class="">
+                                        <div class="mb-1">CIRCLE SIZE</div>
+                                   </div>
                                    <button class="btn btn-outline-secondary btn-sm" id="increase">+</button>
                                    <button class="btn btn-outline-secondary btn-sm"  id="decrease">-</button>
                                    <button class="btn btn-outline-secondary btn-sm" id="remove">remove</button>
                               </div>
                     </div>
                </div>
+          </div>
 
 
           <!-- Upload Section -->
