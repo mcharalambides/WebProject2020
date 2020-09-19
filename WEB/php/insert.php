@@ -90,7 +90,7 @@ else if($action == "Home"){
     $score2 = $score2->fetch_all(MYSQLI_ASSOC);
     //GET TOP 3 SCORERS
     $score = mysqli_query($link,"CALL proc()");
-    $score = mysqli_query($link,"SELECT concat(Users.FirstName,' ',substring(Users.LastName,1,1)) AS 'USER',UserScores.score,UserScores.month FROM `UserScores` LEFT JOIN Users on Users.id=UserScores.user_id WHERE UserScores.score is not null ORDER BY UserScores.score DESC LIMIT 0,3");
+    $score = mysqli_query($link,"SELECT concat(Users.FirstName,' ',substring(Users.LastName,1,1)) AS 'USER',UserScores.score,UserScores.month FROM `UserScores` LEFT JOIN Users on Users.id=UserScores.user_id WHERE UserScores.score is not null ORDER BY UserScores.score ASC LIMIT 0,3");
     $score = $score->fetch_all(MYSQLI_ASSOC);
 
     $response2 = mysqli_query($link,"SELECT latitudeE7,longitudeE7 FROM Arxeio WHERE user_id='".$id."'");
