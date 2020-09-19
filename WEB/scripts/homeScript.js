@@ -12,13 +12,9 @@ $(document).ready(function() {
     $("#header").load("header.html"); 
 
 
-    //const urlParams = new URLSearchParams(window.location.search);
-    var url = new URL(document.URL);
-    var urlParams = url.search;
-    var urlParams = urlParams.slice(1,urlParams.length);
-    var params = urlParams.split("&");
-    const username = params[0].replace("username=","");
-    id = params[1].replace("id=","");
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get('username');
+    id = urlParams.get('id');
 
     document.getElementById("homeLink").setAttribute('href','home.html?username='+username+'&id='+id);
 
@@ -36,7 +32,6 @@ $(document).ready(function() {
 
           //POPULATE SCORE TABLE
           populateScore(obj['LEADERBOARD'], obj['12MONTHS']);
-
           //POPULATE YEARS
           var options = obj["YEARS"];
           $('#year1').empty();
@@ -89,73 +84,18 @@ $(document).ready(function() {
 
 function populateScore(leaderboard,months){
 
+  var length = leaderboard.length;
+  console.log(length);
   var table = document.getElementById("scoreTable");
+  console.log(table.id);
   var tr;
-  var flag = false;
-
-  //POPULATE SCORE TABLE
-  for(var i=0; i<3; i++){
-    if(leaderboard[i]["score"] != null){
-      if(leaderboard[i]["ID"] == id)
-        flag = true;
-      tr = table.insertRow(i+1);
-      tr.insertCell(0).innerHTML = i+1;
-      tr.insertCell(1).innerHTML = leaderboard[i]["USER"];
-      tr.insertCell(2).innerHTML = leaderboard[i]["score"];
+  for(var i=0; i<length; i++){
+    tr = table.insertRow(i+1);
+    tr.insertCell(0).innerHTML = i+1;
+    tr.insertCell(1).innerHTML = leaderboard[i]["USER"];
+    tr.insertCell(2).innerHTML = leaderboard[i]["score"];
     }
-  }
-
-  if(!flag){
-    for(var j=0; j<leaderboard.length; j++){
-      if(leaderboard[j]["ID"] == id && leaderboard[j]["score"]!= null){
-        tr = table.insertRow(i+1);
-        tr.insertCell(0).innerHTML = j+1;
-        tr.insertCell(1).innerHTML = leaderboard[j]["USER"];
-        tr.insertCell(2).innerHTML = leaderboard[j]["score"];
-      }
-    }
-  }
-
-      //CREATE BARCHART FOR THE SCORE OF THE LAST 12 MONTHS
-      var barChart = am4core.create("barchart3", am4charts.XYChart);
-
-      for(var i=0; i<months.length; i++)
-        barChart.data[i] = months[i];
-      
-      barChart.padding(40, 40, 40, 40);
-  
-      var categoryAxis = barChart.xAxes.push(new am4charts.CategoryAxis());
-      categoryAxis.renderer.grid.template.location = 0;
-      categoryAxis.dataFields.category = "month";
-      categoryAxis.renderer.minGridDistance = 20;
-      categoryAxis.renderer.inversed = true;
-      categoryAxis.renderer.grid.template.disabled = true;
-  
-      var valueAxis = barChart.yAxes.push(new am4charts.ValueAxis());
-      valueAxis.min = 0;
-      valueAxis.max = 100;
-  
-      var series = barChart.series.push(new am4charts.ColumnSeries());
-      series.dataFields.categoryX = "month";
-      series.dataFields.valueY = "score";
-      series.tooltipText = "{valueY.value}"
-      series.columns.template.strokeOpacity = 0;
-      series.columns.template.column.cornerRadiusTopRight = 10;
-      series.columns.template.column.cornerRadiusTopLeft = 10;
-  
-      var labelBullet = series.bullets.push(new am4charts.LabelBullet());
-      labelBullet.label.verticalCenter = "bottom";
-      labelBullet.label.dy = -10;
-      labelBullet.label.text = "{values.valueY.workingValue.formatNumber('#.')}";
-  
-      barChart.zoomOutButton.disabled = true;
-  
-      series.columns.template.adapter.add("fill", function (fill, target) {
-        return barChart.colors.getIndex(target.dataItem.index);
-      });
-  
 }
-
 
 $("#display").on("click", function(){
   //Dispose old graphs
@@ -221,8 +161,6 @@ $("#display").on("click", function(){
     var err = textStatus + ", " + error;
     console.log( "Request Failed: " + err );
   });
-
-  window.location.href = "#piechart";
 });
 
 function initMap(data){

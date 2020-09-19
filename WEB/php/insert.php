@@ -67,7 +67,7 @@ else if($action == "Home"){
     }
 
     //GET PERIOD OF RECORDS
-    $temp = mysqli_query($link,"SELECT min(timestampMs) AS MIN, max(timestampMs) AS MAX from Arxeio where user_id ='".$id."'");
+    $temp = mysqli_query($link,"select min(timestampMs) AS MIN, max(timestampMs) AS MAX from Arxeio where user_id ='".$id."'");
     $temp = $temp->fetch_all(MYSQLI_ASSOC);
     if(count($temp) == 0){
         echo ' iam here';
@@ -76,21 +76,21 @@ else if($action == "Home"){
     }
     $max = $temp[0]["MAX"]; $min = $temp[0]["MIN"];
 
-    $temp = mysqli_query($link,"SELECT year(timestampMs) AS YEARS from Arxeio where user_id ='".$id."' GROUP BY year(timestampMs)");
+    $temp = mysqli_query($link,"select year(timestampMs) AS YEARS from Arxeio where user_id ='".$id."' GROUP BY year(timestampMs)");
     $YEARS = $temp->fetch_all(MYSQLI_ASSOC);
 
     //NUMBER OF ACTIVITIES 
-    $temp3 = mysqli_query($link,"SELECT type AS activity,count(*) AS points from Activity where user_id='".$id."'group by type");
+    $temp3 = mysqli_query($link,"select type AS activity,count(*) AS points from Activity where user_id='".$id."'group by type");
     $temp3 = $temp3->fetch_all(MYSQLI_ASSOC);
     $ACTIVITIES = $temp3;
 
     //GET SCORE FOR LAST 12 MONTHS
     $score2 = mysqli_query($link,"CALL proc2('".$id."')");
-    $score2 = mysqli_query($link,"SELECT score*100 as score,month from UserScores where score is not null");
+    $score2 = mysqli_query($link,"select * from UserScores where score is not null");
     $score2 = $score2->fetch_all(MYSQLI_ASSOC);
     //GET TOP 3 SCORERS
     $score = mysqli_query($link,"CALL proc()");
-    $score = mysqli_query($link,"SELECT user_id as ID, concat(Users.FirstName,' ', substring(Users.LastName,1,1)) AS 'USER',UserScores.score,UserScores.month FROM `UserScores` LEFT JOIN Users on Users.id=UserScores.user_id ORDER BY score DESC");
+    $score = mysqli_query($link,"SELECT concat(Users.FirstName,' ',substring(Users.LastName,1,1)) AS 'USER',UserScores.score,UserScores.month FROM `UserScores` LEFT JOIN Users on Users.id=UserScores.user_id WHERE UserScores.score is not null ORDER BY UserScores.score DESC LIMIT 0,3");
     $score = $score->fetch_all(MYSQLI_ASSOC);
 
     $response2 = mysqli_query($link,"SELECT latitudeE7,longitudeE7 FROM Arxeio WHERE user_id='".$id."'");

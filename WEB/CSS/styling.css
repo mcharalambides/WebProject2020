@@ -15,12 +15,6 @@ body {
     background-image: linear-gradient(90deg, #4AA5F0, #6700bf);
 }
 
-.center {
-    margin: auto;
-    width: 50%;
-    padding: 10px;
-  }
-
 
 /*=== HEADINGS & ICONS ===*/
 
@@ -195,11 +189,6 @@ Extra (xl) large devices (large desktops, 1200px and up)
     width: 100%; 
     height: 370px;
     display: none;
-}
-
-#barchart3 {
-    width: 100%; 
-    height: 370px;
 }
 
 #barchart2 {
