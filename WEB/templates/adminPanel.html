@@ -162,9 +162,15 @@
                           Export
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                          <button class="dropdown-item" type="button">to CSV</button>
-                          <button class="dropdown-item" type="button">to XML</button>
-                          <button id="converJSon" class="dropdown-item" type="button">to JSON</button>
+                            <form id="csvFile" method="GET" action="../php/admin.php?action=csv">
+                                <button  class="dropdown-item" type="submit">to CSV</button>
+                          </form>
+                          <form id="xmlFile" method="GET" action="../php/admin.php?action=xml">
+                            <button  class="dropdown-item" type="submit">to XML</button>
+                          </form>
+                          <form id="jsonFile" method="GET" action="../php/admin.php?action=json">
+                                <button  class="dropdown-item" type="submit">to JSON</button>
+                          </form>
                         </div>
                       </div>
                       <div class="pl-1">

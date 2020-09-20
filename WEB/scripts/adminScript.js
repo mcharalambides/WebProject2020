@@ -193,9 +193,7 @@ $(".button6").on("click", function(){
         initBarChart(obj['but6']);
         
 });
-
-$("#displayOnMap").on("click", function(){
-  
+function completeCond(){
   var e = document.getElementById("year1");
   var maxYEAR = e.options[e.options.length-1].value;
   var minYEAR = e.options[1].value;
@@ -272,7 +270,12 @@ $("#displayOnMap").on("click", function(){
   else
     condition = condition.replace("*",maxHOUR);
 
-  var query = "SELECT latitudeE7,longitudeE7 FROM Arxeio LEFT JOIN Activity on Arxeio.user_id = Activity.user_id AND Arxeio.timestampMs = Activity.timestampMs " + condition;
+    return condition;
+}
+
+$("#displayOnMap").on("click", function(){
+  
+  var query = "SELECT latitudeE7,longitudeE7 FROM Arxeio LEFT JOIN Activity on Arxeio.user_id = Activity.user_id AND Arxeio.timestampMs = Activity.timestampMs " + completeCond();
   
 
    $.get("../php/admin.php", {'action': "Query", 'Query':query}, function(data){
@@ -400,4 +403,22 @@ $("#dataDelete").on("click",function(){
         // Do nothing!
       }
 })
+
+$("#jsonFile").submit(function(){
+  var query = "SELECT Arxeio.timestampMs, Arxeio.heading,Arxeio.velocity,Arxeio.accuracy,Arxeio.altitude,Arxeio.latitudeE7,Arxeio.longitudeE7,Arxeio.verticalAccuracy,Arxeio.user_id,Activity.type FROM Arxeio LEFT JOIN Activity on Arxeio.user_id = Activity.user_id AND Arxeio.timestampMs = Activity.timestampMs " + completeCond();
+  $("#jsonFile").append('<input type="hidden" name="query" value="'+query+'" />');
+  $("#jsonFile").append('<input type="hidden" name="action" value=json />');
+});
+
+$("#csvFile").submit(function(){
+  var query = "SELECT Arxeio.timestampMs, Arxeio.heading,Arxeio.velocity,Arxeio.accuracy,Arxeio.altitude,Arxeio.latitudeE7,Arxeio.longitudeE7,Arxeio.verticalAccuracy,Arxeio.user_id,Activity.type FROM Arxeio LEFT JOIN Activity on Arxeio.user_id = Activity.user_id AND Arxeio.timestampMs = Activity.timestampMs " + completeCond();
+  $("#csvFile").append('<input type="hidden" name="query" value="'+query+'" />');
+  $("#csvFile").append('<input type="hidden" name="action" value=csv />');
+});
+
+$("#xmlFile").submit(function(){
+  var query = "SELECT Arxeio.timestampMs, Arxeio.heading,Arxeio.velocity,Arxeio.accuracy,Arxeio.altitude,Arxeio.latitudeE7,Arxeio.longitudeE7,Arxeio.verticalAccuracy,Arxeio.user_id,Activity.type FROM Arxeio LEFT JOIN Activity on Arxeio.user_id = Activity.user_id AND Arxeio.timestampMs = Activity.timestampMs " + completeCond();
+  $("#xmlFile").append('<input type="hidden" name="query" value="'+query+'" />');
+  $("#xmlFile").append('<input type="hidden" name="action" value=xml />');
+});
 
