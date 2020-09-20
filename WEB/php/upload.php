@@ -74,7 +74,7 @@ if(isset($_POST['submit'])){
 
         $timestampMs = gmdate('Y-m-d H:i:s',$myObject["locations"][$i]["timestampMs"]/1000);
 
-        if (strpos($myString,strval($timestampMs)) !== false) 
+        if (substr_count($myString, $timestampMs) > 0) 
             continue;
         
         $myString .= "('".$id."','".$timestampMs."',
@@ -86,7 +86,7 @@ if(isset($_POST['submit'])){
             for($j = 0; $j < count($myObject["locations"][$i]["activity"]); $j++){
 
                 $subTimestampMs = gmdate('Y-m-d H:i:s',$myObject["locations"][$i]["activity"][$j]["timestampMs"]/1000);
-                if (strpos($myString2,strval($subTimestampMs)) !== false) 
+                if (substr_count($myString2, $subTimestampMs) > 0) 
                     continue;
 
                 $myString2 .= "('".$id."','".$timestampMs."','".$subTimestampMs."',";

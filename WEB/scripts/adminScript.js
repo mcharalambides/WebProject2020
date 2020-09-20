@@ -49,6 +49,9 @@ $(document).ready(function() {
               $('#hour2').append($('<option></option>').val(i).html(p));
           }); 
 
+          addRow();
+
+
     }).fail(function(textStatus, error ) {
       var err = textStatus + ", " + error;
       console.log( "Request Failed: " + err );
@@ -68,6 +71,61 @@ $(document).ready(function() {
     
      heat = L.heatLayer([], {radius: 25}).addTo(map);
 });
+
+
+
+function addRow(){
+  var table = document.getElementById("myTable");
+
+      var tr = table.insertRow(table.rows.length);
+
+      var th = document.createElement('th');
+      th.innerHTML = "Type";
+      th.setAttribute("scope","row");
+      tr.appendChild(th);
+
+      //CREATE DROPDOWN FOR FIRST CELL
+      var td = tr.insertCell(1);
+
+        var selectList = document.createElement("select");
+        selectList.setAttribute("class", "selectType");
+
+        var option = document.createElement("option");
+        option.innerHTML = "--OPTIONS--";
+        option.setAttribute("value","");
+        selectList.appendChild(option);
+        
+        for (var j = 0; j < obj["but1"].length; j++) {
+          option = document.createElement("option");
+          option.setAttribute("value", obj["but1"][j]["category"]);
+          option.text = obj["but1"][j]["category"];
+          selectList.appendChild(option);
+        }
+
+        td.appendChild(selectList);
+     
+        //CREATE BUTTON FOR SECOND CELL
+      td = tr.insertCell(2);
+      var button = document.createElement("button");
+      button.setAttribute("class","addRow");
+      button.innerHTML = "+";
+      button.setAttribute("onclick","addRow()");
+      td.appendChild(button);
+    
+  }
+
+  function getValues(){
+    var values = document.getElementsByClassName("selectType");
+    var array = [];
+
+    for(var i=0; i<values.length; i++){
+      var value = values[i].options[values[i].selectedIndex].value;
+      if(!(value == ""))
+        array.push("'" + value + "'");
+    }
+
+    return array;
+  }
 
 $(".button1").on("click", function(){
     if(previousChart != null){
@@ -166,8 +224,14 @@ $("#displayOnMap").on("click", function(){
   e = document.getElementById("hour2");
   var hour2 = e.options[e.selectedIndex].value; 
 
-  var condition = "WHERE year(timestampMs)>=! and year(timestampMs)<=@ and month(timestampMs)>=# and month(timestampMs)<=$" +  
-                    " and dayofweek(timestampMs)>=% and dayofweek(timestampMs)<=^ and hour(timestampMs)>=& and hour(timestampMs)<=*";
+  //CREATE TYPE SET
+  if(!getValues().length == 0)
+    var set = " and type in (" + getValues().join(",") + ")";
+  else
+    var set = " ";
+
+  var condition = "WHERE year(Arxeio.timestampMs)>=! and year(Arxeio.timestampMs)<=@ and month(Arxeio.timestampMs)>=# and month(Arxeio.timestampMs)<=$" +  
+                    " and dayofweek(Arxeio.timestampMs)>=% and dayofweek(Arxeio.timestampMs)<=^ and hour(Arxeio.timestampMs)>=& and hour(Arxeio.timestampMs)<=*" + set + " GROUP BY Arxeio.user_id,Arxeio.timestampMs";
   if(year1 != "")
     condition = condition.replace("!",year1);
   else
@@ -208,9 +272,8 @@ $("#displayOnMap").on("click", function(){
   else
     condition = condition.replace("*",maxHOUR);
 
-  var query = "SELECT latitudeE7,longitudeE7 FROM Arxeio " + condition;
+  var query = "SELECT latitudeE7,longitudeE7 FROM Arxeio LEFT JOIN Activity on Arxeio.user_id = Activity.user_id AND Arxeio.timestampMs = Activity.timestampMs " + condition;
   
-  console.log(query);
 
    $.get("../php/admin.php", {'action': "Query", 'Query':query}, function(data){
     data = $.parseJSON(data);

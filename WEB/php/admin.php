@@ -53,12 +53,13 @@ if($action == "Home"){
 }
 else if ($action == "Query"){
     //Getting new coordinates
+    //echo $_GET["Query"];
     $coords = mysqli_query($link,$_GET["Query"]);
     $coords = $coords->fetch_all(MYSQLI_ASSOC);
 
     //Getting hours
     $response["coords"] = $coords;
-    echo json_encode($response);
+    echo json_encode($response);  
 }
 else if ($action == "Delete"){
     //Getting delete queries
