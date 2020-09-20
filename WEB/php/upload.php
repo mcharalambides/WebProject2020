@@ -158,5 +158,3 @@ function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo
       cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
     return $angle * $earthRadius;
   }
-
-?>

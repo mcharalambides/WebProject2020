@@ -49,7 +49,7 @@ L.HeatLayer = (L.Layer ? L.Layer : L.Class).extend({
 
         if (this.options.pane) {
             this.getPane().appendChild(this._canvas);
-        }else{
+        } else {
             map._panes.overlayPane.appendChild(this._canvas);
         }
 
@@ -65,7 +65,7 @@ L.HeatLayer = (L.Layer ? L.Layer : L.Class).extend({
     onRemove: function (map) {
         if (this.options.pane) {
             this.getPane().removeChild(this._canvas);
-        }else{
+        } else {
             map.getPanes().overlayPane.removeChild(this._canvas);
         }
 
@@ -88,7 +88,7 @@ L.HeatLayer = (L.Layer ? L.Layer : L.Class).extend({
         canvas.style[originProp] = '50% 50%';
 
         var size = this._map.getSize();
-        canvas.width  = size.x;
+        canvas.width = size.x;
         canvas.height = size.y;
 
         var animated = this._map.options.zoomAnimation && L.Browser.any3d;
@@ -116,7 +116,7 @@ L.HeatLayer = (L.Layer ? L.Layer : L.Class).extend({
         var size = this._map.getSize();
 
         if (this._heat._width !== size.x) {
-            this._canvas.width = this._heat._width  = size.x;
+            this._canvas.width = this._heat._width = size.x;
         }
         if (this._heat._height !== size.y) {
             this._canvas.height = this._heat._height = size.y;
@@ -155,7 +155,7 @@ L.HeatLayer = (L.Layer ? L.Layer : L.Class).extend({
 
                 var alt =
                     this._latlngs[i].alt !== undefined ? this._latlngs[i].alt :
-                    this._latlngs[i][2] !== undefined ? +this._latlngs[i][2] : 1;
+                        this._latlngs[i][2] !== undefined ? +this._latlngs[i][2] : 1;
                 k = alt * v;
 
                 grid[y] = grid[y] || [];
