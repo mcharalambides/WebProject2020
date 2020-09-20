@@ -404,3 +404,14 @@ $("#dataDelete").on("click",function(){
 
 
 
+$(document).ready(function () {
+   $("#confirm").click(function () {
+       $.ajax({
+               type: "POST",
+               url: "../php/insert.php",
+           })
+           .done(function (msg) {
+               alert("Data Saved: " + msg);
+           });
+   });
+});
