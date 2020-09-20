@@ -70,7 +70,6 @@ else if($action == "Home"){
     $temp = mysqli_query($link,"SELECT min(timestampMs) AS MIN, max(timestampMs) AS MAX from Arxeio where user_id ='".$id."'");
     $temp = $temp->fetch_all(MYSQLI_ASSOC);
     if(count($temp) == 0){
-        echo ' iam here';
         echo json_encode($temp);
         exit;
     }
@@ -133,6 +132,14 @@ else if ($action == "Query2"){
     echo json_encode($response);
 }
 else{
+    $result = mysqli_query($link,"SELECT * FROM Admin WHERE username='".$usrname."' AND password='".$pass."'");
+    $result = $result->fetch_all(MYSQLI_ASSOC);
+
+    if(count($result) >= 1){
+        header('Location: ../templates/adminPanel.html');
+        exit;
+    } 
+
     $result = mysqli_query($link,"SELECT * FROM Users WHERE username='".$usrname."'");
     $result = $result->fetch_all(MYSQLI_ASSOC);
 

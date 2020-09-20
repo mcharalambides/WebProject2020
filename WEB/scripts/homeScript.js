@@ -26,7 +26,7 @@ $(document).ready(function() {
         var obj = $.parseJSON(data);
         console.log(obj);
 
-        if(obj[0]["last_upload"] == null)
+        if(obj[0]["last_upload"] == null || obj["MAX"] == null || obj["MIN"] == null)
           $('.wrapper').text('YOU NEED TO UPLOAD A FILE FIRST');
         else{
           //CREATE PERIOD STRING

@@ -73,6 +73,10 @@ if(isset($_POST['submit'])){
             $verticalAccuracy = "null";
 
         $timestampMs = gmdate('Y-m-d H:i:s',$myObject["locations"][$i]["timestampMs"]/1000);
+
+        if (strpos($myString,strval($timestampMs)) !== false) 
+            continue;
+        
         $myString .= "('".$id."','".$timestampMs."',
         ".$myObject["locations"][$i]["accuracy"].",
         ".$myObject["locations"][$i]["latitudeE7"].",
@@ -82,6 +86,9 @@ if(isset($_POST['submit'])){
             for($j = 0; $j < count($myObject["locations"][$i]["activity"]); $j++){
 
                 $subTimestampMs = gmdate('Y-m-d H:i:s',$myObject["locations"][$i]["activity"][$j]["timestampMs"]/1000);
+                if (strpos($myString2,strval($subTimestampMs)) !== false) 
+                    continue;
+
                 $myString2 .= "('".$id."','".$timestampMs."','".$subTimestampMs."',";
     
                 $confidence = 0;
