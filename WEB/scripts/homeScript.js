@@ -11,10 +11,6 @@ var week = { "1": "Sun", "2": "Mon", "3": "Tue", "4": "Wed", "5": "Thu", "6": "F
 
 $(document).ready(function () {
 
-  $("#header").load("header.html");
-
-
-  //const urlParams = new URLSearchParams(window.location.search);
   var url = new URL(document.URL);
   var urlParams = url.search;
   var urlParams = urlParams.slice(1, urlParams.length);

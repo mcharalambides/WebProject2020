@@ -108,7 +108,7 @@ if ($action == "Home") {
 
     echo arrayToXml($query);
 
-    file_put_contents('php://output', $xml_data);
+    //file_put_contents('php://output', $xml_data);
 }
 
 function arrayToXml($array, $rootElement = null, $xml = null)

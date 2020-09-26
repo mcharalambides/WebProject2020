@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 
 $link = mysqli_connect("127.0.0.1", "root", "", "Project2020", "3307");
 
@@ -24,10 +24,11 @@ else
     $action = null;
 
 if ($action == 'LogOut') {
-    echo '<script language="javascript"> 
+     session_destroy();
+     echo '<script language="javascript"> 
             alert("Logging Out"); 
             window.location.href=" ../templates/login.html"; 
-            </script>';
+            </script>'; 
 }
 
 $data = json_decode(file_get_contents("php://input"));
@@ -57,6 +58,7 @@ if ($action == "Register") {
         </script>';
     }
 } else if ($action == "Home") {
+
     $response = mysqli_query($link, "SELECT * FROM Users WHERE id='" . $id . "'");
     $response = $response->fetch_all(MYSQLI_ASSOC);
     if ($response[0]["last_upload"] == null) {
@@ -132,6 +134,7 @@ if ($action == "Register") {
     $result = $result->fetch_all(MYSQLI_ASSOC);
 
     if (count($result) >= 1) {
+        $_SESSION["admin"] = "admin";
         header('Location: ../templates/adminPanel.html');
         exit;
     }
@@ -142,8 +145,9 @@ if ($action == "Register") {
     if (count($result) > 0) {
         for ($i = 0; $i < count($result); $i++) {
             if (password_verify($pass, $result[$i]["password"]) == 1) {
-                header('Location: ../templates/home.html?username=' . $result[$i]["username"] . '&id=' . $result[$i]["id"]);
-                exit;
+                $_SESSION["username"] = $usrname;
+                 header('Location: ../templates/home.html?username=' . $result[$i]["username"] . '&id=' . $result[$i]["id"]);
+                exit;  
             } else {
                 echo '<script language="javascript"> 
                 alert("INVALID CREDENTIALS"); 
