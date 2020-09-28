@@ -1,3 +1,11 @@
+<?php 
+	session_start();
+     if(!isset($_SESSION["admin"]))
+     echo '<script language="javascript"> 
+        alert("YOU ARE NOT LOGGED IN"); 
+        window.location.href=" ../templates/login.html"; 
+        </script>'; 
+?>
 <!DOCTYPE html>
 
 <html>

@@ -41,15 +41,6 @@ if ($action == "Register") {
     if (isset($_GET["lastName"]))
         $last = ($_GET["lastName"]);
 
-    //2-WAY ENCRYPTION
-    $cipher = "aes-128-gcm";
-    $ivlen = openssl_cipher_iv_length($cipher);
-    $iv = openssl_random_pseudo_bytes($ivlen);
-    $id = openssl_encrypt($email, $cipher, $pass, $options = 0, $iv, $tag);
-
-    //HASHING PASSWORD
-    $pass = password_hash($pass, PASSWORD_DEFAULT);
-    
     //Checking that the username is not in use
     $response = mysqli_query($link, "SELECT * FROM Users WHERE username='" . $usrname . "'");
     $response = $response->fetch_all(MYSQLI_ASSOC);
@@ -61,13 +52,44 @@ if ($action == "Register") {
         exit;
     }
 
+        //Checking for password 
+        $flag = true;
+    
+        if(strlen($pass)<8)
+            $flag = false;
+        if(strtolower($pass) == $pass)
+            $flag = false;
+        if(strcspn($pass, '0123456789') == strlen($pass)) 
+            $flag = false;
+        if(strcspn($pass, "!@#$%^&*()-_=+[{]}\\|;:'\",<.>/?`~") == strlen($pass))
+            $flag = false;
+    
+         if(!$flag){
+            echo '<script language="javascript"> 
+            alert("PASSWORD DOESNT MEET THE CRITERIA");
+            window.location.href=" ../templates/register.html";
+            </script>';
+            exit;
+        } 
+
+    //2-WAY ENCRYPTION
+    $cipher = "aes-128-gcm";
+    $ivlen = openssl_cipher_iv_length($cipher);
+    $iv = openssl_random_pseudo_bytes($ivlen);
+    $id = openssl_encrypt($email, $cipher, $pass, $options = 0, $iv, $tag);
+
+    //HASHING PASSWORD
+    $pass = password_hash($pass, PASSWORD_DEFAULT);
+    
+
     $response = mysqli_query($link, "INSERT INTO Users(id,username,password,email,FirstName,LastName)VALUES('" . $id . "','" . $usrname . "','" . $pass . "','" . $email . "','" . $first . "','" . $last . "')");
     if ($response) {
         echo '<script language="javascript"> 
         alert("Registration was succesful you will be redirected to login page");
         window.location.href=" ../templates/login.html";
         </script>';
-    }
+    } 
+    
 } else if ($action == "Home") {
 
     $response = mysqli_query($link, "SELECT * FROM Users WHERE id='" . $id . "'");

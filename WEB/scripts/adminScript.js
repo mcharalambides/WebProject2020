@@ -382,6 +382,7 @@ function initBarChart(data) {
   var labelBullet = series.bullets.push(new am4charts.LabelBullet());
   labelBullet.label.verticalCenter = "bottom";
   labelBullet.label.dy = -10;
+  labelBullet.label.fontSize = 14;
   labelBullet.label.text = "{values.valueY.workingValue.formatNumber('#.')}";
 
   barChart.zoomOutButton.disabled = true;
