@@ -62,7 +62,7 @@ if ($action == "Home") {
     //Getting delete queries
     $query1 = mysqli_query($link, $_GET["Query1"]);
     $query2 = mysqli_query($link, $_GET["Query2"]);
-
+    $query3 = mysqli_query($link, "UPDATE Users SET last_upload =  null");
     echo "DATA HAS BEEN DELETED";
 } else if ($action == "json") {
     //Getting delete queries
@@ -106,9 +106,7 @@ if ($action == "Home") {
     header('Cache-Control: must-revalidate');
     header('Content-Length: ' . strlen(json_encode($query)));
 
-    echo arrayToXml($query);
-
-    //file_put_contents('php://output', $xml_data);
+    file_put_contents('php://output', arrayToXml($query));
 }
 
 function arrayToXml($array, $rootElement = null, $xml = null)
@@ -122,7 +120,8 @@ function arrayToXml($array, $rootElement = null, $xml = null)
 
     // Visit all key value pair 
     foreach ($array as $k => $v) {
-
+        $k = is_numeric($k) ? "record" : $k;
+        
         // If there is nested array then 
         if (is_array($v)) {
 
@@ -130,7 +129,7 @@ function arrayToXml($array, $rootElement = null, $xml = null)
             arrayToXml($v, $k, $_xml->addChild($k));
         } else {
 
-            // Simply add child element.  
+            // Simply add child element. 
             $_xml->addChild($k, $v);
         }
     }

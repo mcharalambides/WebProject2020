@@ -104,6 +104,11 @@ if(isset($_POST['submit'])){
         }
     }
 
+/*     echo $myString;
+    echo $myString2;
+
+    //exit; */
+    
     if($flag){
         $sql .= substr($myString, 0 ,-1).";";
         $sql2 .= substr($myString2, 0 ,-1).";";

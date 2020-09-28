@@ -49,6 +49,17 @@ if ($action == "Register") {
 
     //HASHING PASSWORD
     $pass = password_hash($pass, PASSWORD_DEFAULT);
+    
+    //Checking that the username is not in use
+    $response = mysqli_query($link, "SELECT * FROM Users WHERE username='" . $usrname . "'");
+    $response = $response->fetch_all(MYSQLI_ASSOC);
+    if (count($response) > 0) {
+        echo '<script language="javascript"> 
+        alert("THE USERNAME IS IN USE");
+        window.location.href=" ../templates/register.html";
+        </script>';
+        exit;
+    }
 
     $response = mysqli_query($link, "INSERT INTO Users(id,username,password,email,FirstName,LastName)VALUES('" . $id . "','" . $usrname . "','" . $pass . "','" . $email . "','" . $first . "','" . $last . "')");
     if ($response) {
