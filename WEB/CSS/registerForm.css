@@ -37,9 +37,6 @@ body {
   text-decoration: none;
 }
 
-label {
-  width: 100px;
-}
 
 .alert {
   display: none;
