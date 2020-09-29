@@ -352,7 +352,7 @@ function initBarChart2(data) {
   previousChart2 = barChart2;
 
   for (var i = 0; i < data["MAX_DAYOFWEEK"].length; i++) {
-    data["MAX_DAYOFWEEK"][i]["time"] = week[i + 1];
+    data["MAX_DAYOFWEEK"][i]["time"] = week[data["MAX_DAYOFWEEK"][i]["time"]];
     barChart2.data[i] = data["MAX_DAYOFWEEK"][i];
   }
 

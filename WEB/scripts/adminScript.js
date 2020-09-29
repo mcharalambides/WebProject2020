@@ -15,6 +15,7 @@ $(document).ready(function () {
   $.get("../php/admin.php", { 'action': "Home" }, function (data) {
     obj = JSON.parse(JSON.stringify($.parseJSON(data)));
 
+    console.log(obj);
 
     //POPULATE YEARS
     var options = obj["but6"];
@@ -35,6 +36,7 @@ $(document).ready(function () {
       $('#month2').append($('<option></option>').val(i).html(p));
     });
 
+    //POPULATE DAYS
     $('#day1').empty();
     $('#day2').empty();
     $('#day1').append($('<option>--OPTIONS--</option>').val(null));
@@ -44,6 +46,7 @@ $(document).ready(function () {
       $('#day2').append($('<option></option>').val(i).html(p));
     });
 
+    //POPULATE HOURS
     $('#hour1').empty();
     $('#hour2').empty();
     $('#hour1').append($('<option>--OPTIONS--</option>').val(null));
@@ -53,6 +56,14 @@ $(document).ready(function () {
       $('#hour2').append($('<option></option>').val(i).html(p));
     });
 
+    //FIXING THE NAMES FOR MONTHS AND WEEKS
+    for (var i = 0; i < obj['but3'].length; i++)
+    obj['but3'][i]["category"] = months[obj['but3'][i]["category"]];
+
+    for (var i = 0; i < obj['but4'].length; i++)
+    obj['but4'][i]["category"] = week[obj['but4'][i]["category"]];
+
+    //ADDING THE 1ST ROW FOR TYPE IN FILTERS
     addRow();
 
 
@@ -152,9 +163,7 @@ $(".button2").on("click", function () {
 });
 
 $(".button3").on("click", function () {
-  for (var i = 0; i < obj['but3'].length; i++)
-    obj['but3'][i]["category"] = months[i + 1];
-
+  
   if (previousChart != null) {
     previousChart.dispose();
     initBarChart(obj['but3']);
@@ -165,9 +174,6 @@ $(".button3").on("click", function () {
 });
 
 $(".button4").on("click", function () {
-
-  for (var i = 0; i < obj['but4'].length; i++)
-    obj['but4'][i]["category"] = week[i + 1];
 
   if (previousChart != null) {
     previousChart.dispose();
