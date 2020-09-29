@@ -126,8 +126,10 @@ if ($action == "Register") {
     $score = mysqli_query($link, "SELECT user_id as ID, concat(Users.FirstName,' ', substring(Users.LastName,1,1)) AS 'USER',UserScores.score,UserScores.month FROM `UserScores` LEFT JOIN Users on Users.id=UserScores.user_id ORDER BY score DESC");
     $score = $score->fetch_all(MYSQLI_ASSOC);
 
+    //GET COORDINATES
     $response2 = mysqli_query($link, "SELECT latitudeE7,longitudeE7 FROM Arxeio WHERE user_id='" . $id . "'");
     $response2 = $response2->fetch_all(MYSQLI_ASSOC);
+    
     $response["ACTIVITIES"] = $ACTIVITIES;
     $response["coords"] = $response2;
     $response["MAX"] = $max;

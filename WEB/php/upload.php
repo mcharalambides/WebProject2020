@@ -122,15 +122,18 @@ if(isset($_POST['submit'])){
             </script>';  
         }
         else{ 
-            echo "<br> Error: " . $sql . "<br>" . $conn->error;
-            echo "<br> Error: " . $sql2 . "<br>" . $conn->error;
+            echo '<script language="javascript"> 
+            alert("'.$conn->error.'");
+            window.location.href=" ../templates/home.html?username='.$_POST['username'].'&id='.$id.'"; 
+            </script>';  
+/*             echo "<br> Error: " . $sql . "<br>" . $conn->error;
+            echo "<br> Error: " . $sql2 . "<br>" . $conn->error; */
         }
 
     }
     else{
         echo '<script language="javascript"> 
             alert("No points inside Patra"); 
-            window.location.href=" ../templates/home.html?username='.$_POST['username'].'&id='.$id.'"; 
             </script>';
     }
 
