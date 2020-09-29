@@ -1,3 +1,5 @@
+var regButton = document.getElementById('registerButton');
+
 $(function () {
     var $password = $(".form-control[type='password']");
     var $passwordAlert = $(".password-alert");
@@ -7,8 +9,11 @@ $(function () {
     var $bigLetter = $(".big-letter");
     var $num = $(".num");
     var $specialChar = $(".special-char");
-    var specialChars = "!@#$%^&*()-_=+[{]}\\|;:'\",<.>/?`~";
+    var specialChars = "!@#$%^&*()-_=+[{]}\\|;:',<.>/?`~";
     var numbers = "0123456789";
+
+    
+    regButton.disabled = true;
 
     $requirements.addClass("wrong");
     $password.on("focus", function () { $passwordAlert.show(); });
@@ -55,6 +60,7 @@ $(function () {
             $(this).addClass("valid").removeClass("invalid");
             $requirements.removeClass("wrong").addClass("good");
             $passwordAlert.removeClass("alert-warning").addClass("alert-success");
+            regButton.disabled = false;
         }
         else {
             $(this).addClass("invalid").removeClass("valid");
@@ -71,6 +77,7 @@ $(function () {
 
             if (specialChar == false) { $specialChar.addClass("wrong").removeClass("good"); }
             else { $specialChar.addClass("good").removeClass("wrong"); }
+            regButton.disabled = true;
         }
 
 
